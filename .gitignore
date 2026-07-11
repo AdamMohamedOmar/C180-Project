@@ -1,0 +1,21 @@
+﻿# Python / uv
+pipeline/.venv/
+**/__pycache__/
+*.pyc
+
+# PlatformIO
+firmware/.pio/
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/*/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/captures/
+
+# General
+.DS_Store
+Thumbs.db
+*.log
