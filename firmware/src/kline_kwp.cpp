@@ -23,17 +23,13 @@ bool KlineKwp::send_request_and_get_response(const uint8_t* data, uint8_t data_l
   }
   transport_.write(frame, frame_len);
 
-  uint8_t response[32];
-  size_t response_len = transport_.read(response, sizeof(response), kResponseTimeoutMs);
-  if (response_len == 0 || !kline_parse_frame(response, response_len, out)) {
-    ++consecutive_timeouts_;
-    return false;
-  }
-  if (out->target != kTesterAddress || out->source != kTargetAddress) {
-    // Real half-duplex K-line hardware can echo the request back on RX;
-    // a self-echo has target/source exactly reversed from a genuine ECU
-    // response. Not reachable on Phase 1's direct-UART bench link (no
-    // echo), but cheap to guard now ahead of Phase 2/3 real hardware.
+  // Deliberately no pre-write RX drain here: FakeTransport-based tests
+  // pre-queue a response before write() is called (a drain would eat it),
+  // and a stale frame left over from a prior exchange gets caught by
+  // read_frame's own address check (discarded, not returned) or by the
+  // content checks in read_pid/read_dtcs (wrong SID/PID rejected) within
+  // this one poll cycle -- no separate flush is needed for correctness.
+  if (!read_frame(out, kResponseTimeoutMs)) {
     ++consecutive_timeouts_;
     return false;
   }
@@ -45,6 +41,63 @@ bool KlineKwp::send_request_and_get_response(const uint8_t* data, uint8_t data_l
   // is dead and doesn't warrant a full re-init.
   consecutive_timeouts_ = 0;
   return true;
+}
+
+bool KlineKwp::read_frame(ParsedFrame* out, uint32_t deadline_budget_ms) {
+  const uint32_t start = transport_.now_ms();
+  uint8_t buf[3 + kKlineMaxDataLen + 1];  // FMT,TGT,SRC,DATA...,CS
+
+  for (;;) {
+    const uint32_t elapsed_before_fmt = transport_.now_ms() - start;
+    if (elapsed_before_fmt >= deadline_budget_ms) {
+      return false;
+    }
+    // Real half-duplex K-line hardware echoes our own TX back on RX before
+    // the ECU's reply arrives; not reachable on Phase 1's direct-UART bench
+    // link (no echo), but this loop tolerates it either way. A self-echo is
+    // addressed target=kTargetAddress/source=kTesterAddress -- exactly
+    // reversed from a genuine ECU reply -- and gets silently discarded
+    // below (`continue`) rather than counted as a failed exchange.
+    if (transport_.read(&buf[0], 1, deadline_budget_ms - elapsed_before_fmt) == 0) {
+      return false;  // KLineTransport::read blocks until timeout; 0 bytes IS the deadline.
+    }
+
+    const uint8_t data_len = buf[0] & kKlineMaxDataLen;
+    if (data_len == 0) {
+      // KWP's escape-length form (additional length byte follows) -- never
+      // emitted by kline_build_frame and not implemented here.
+      return false;
+    }
+
+    const size_t body_len = 2 + static_cast<size_t>(data_len) + 1;  // TGT,SRC,DATA...,CS
+    bool body_ok = true;
+    for (size_t i = 0; i < body_len; ++i) {
+      const uint32_t elapsed = transport_.now_ms() - start;
+      if (elapsed >= deadline_budget_ms) {
+        body_ok = false;
+        break;
+      }
+      const uint32_t remaining = deadline_budget_ms - elapsed;
+      const uint32_t byte_timeout = kInterByteTimeoutMs < remaining ? kInterByteTimeoutMs : remaining;
+      if (transport_.read(&buf[1 + i], 1, byte_timeout) == 0) {
+        body_ok = false;  // inter-byte gap exceeded -- frame died mid-transmission
+        break;
+      }
+    }
+    if (!body_ok) {
+      return false;
+    }
+
+    const size_t frame_len = 3 + static_cast<size_t>(data_len) + 1;
+    if (!kline_parse_frame(buf, frame_len, out)) {
+      return false;  // corrupt/checksum-mismatched frame -- don't keep reading past it
+    }
+
+    if (out->target != kTesterAddress || out->source != kTargetAddress) {
+      continue;  // self-echo or foreign traffic -- discard and keep listening
+    }
+    return true;
+  }
 }
 
 bool KlineKwp::start_communication() {

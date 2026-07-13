@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kompressorlink.app.reference.ReferenceRepository
 import com.kompressorlink.app.telemetry.ConnectionState
+import com.kompressorlink.app.telemetry.Signal
 import com.kompressorlink.app.telemetry.TelemetrySource
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +26,14 @@ class DashboardViewModel(
     private val histories =
         DashboardLogic.DASHBOARD_SIGNALS.associateWith { ArrayDeque<Float>(HISTORY_CAP) }
 
+    // Immutable snapshot of each history, refreshed only when that signal's
+    // deque actually mutates (inside onEach below) -- never re-derived on a
+    // connectionState-only combine() re-invocation. Keeps combine()'s gauge
+    // mapping allocation-free on ticks with no new telemetry, and keeps each
+    // GaugeUiState.history reference-stable across such ticks instead of a
+    // fresh List copy per signal per emission.
+    private val historySnapshots = mutableMapOf<Signal, List<Float>>()
+
     // The history mutation must run exactly once per genuine telemetry
     // emission — never once per combine() invocation. onEach() runs its
     // side effect once per emission from source.telemetry specifically,
@@ -41,6 +50,7 @@ class DashboardViewModel(
                     snapshot.value(signal)?.let {
                         if (history.size == HISTORY_CAP) history.removeFirst()
                         history.addLast(it)
+                        historySnapshots[signal] = history.toList()
                     }
                 }
             },
@@ -49,7 +59,7 @@ class DashboardViewModel(
             DashboardUiState(
                 gauges = DashboardLogic.DASHBOARD_SIGNALS.map { signal ->
                     DashboardLogic.gaugeFor(signal, snapshot, refs,
-                                            histories.getValue(signal).toList())
+                                            historySnapshots[signal] ?: emptyList())
                 },
                 connectionLabel = label(conn, snapshot.isDemo, snapshot.klineConnected),
             )

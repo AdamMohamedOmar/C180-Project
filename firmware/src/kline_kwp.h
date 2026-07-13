@@ -6,11 +6,20 @@
 #include "kline_frame.h"
 #include "kline_transport.h"
 
-// [Best estimate] read timeout for a single request/response over the
-// Phase 1 direct-UART bench link. Real P2max negotiation (from the
-// StartCommunication response) supersedes this once Phase 3 has real ECU
-// data — see docs/superpowers/specs/2026-07-09-phase1-firmware-core-design.md §5.
+// [Best estimate] overall budget for one request/response exchange, from the
+// end of our write() to a fully-received, correctly-addressed response frame.
+// Covers a possible self-echo (see read_frame), ECU think time, and frame
+// transmission at 10.4 kbps (a max-length frame is ~26 bytes, ~25 ms on the
+// wire). Real P2/P2* negotiation (from the StartCommunication response)
+// supersedes this once Phase 3 has real ECU data — see
+// docs/superpowers/specs/2026-07-09-phase1-firmware-core-design.md §5.
 inline constexpr uint32_t kResponseTimeoutMs = 100;
+
+// [Best estimate] max gap between consecutive bytes WITHIN one frame. ISO
+// 14230-2's default P1 max is 20 ms; +5 ms margin for USB-TTL adapter
+// chunking on the Phase 1 bench link. A gap longer than this means the frame
+// died mid-transmission. Real P1 is settled at Phase 3 against the car.
+inline constexpr uint32_t kInterByteTimeoutMs = 25;
 
 class KlineKwp {
  public:
@@ -48,6 +57,11 @@ class KlineKwp {
  private:
   bool send_request_and_get_response(const uint8_t* data, uint8_t data_len, ParsedFrame* out);
   bool read_dtcs(uint8_t request_sid, uint8_t positive_sid, DtcList* out);
+
+  // Reads one complete, correctly-addressed frame within `deadline_budget_ms`
+  // of `transport_.now_ms()`, transparently discarding any self-echo (or
+  // foreign bus traffic) along the way. See kline_kwp.cpp for the algorithm.
+  bool read_frame(ParsedFrame* out, uint32_t deadline_budget_ms);
 
   KLineTransport& transport_;
   int consecutive_timeouts_ = 0;

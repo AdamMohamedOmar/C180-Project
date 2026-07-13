@@ -56,6 +56,15 @@ bool PidScheduler::tick(uint32_t now_ms, Reading* out_reading) {
 
   const WireFormat& wf = kWireFormatTable[due_index];
   const Tier tier = kSignalTable[static_cast<size_t>(wf.signal)].tier;
+  // Anchored to now_ms (the tick-start timestamp captured by the caller),
+  // NOT to the time kwp_.read_pid() below returns -- so the blocking read's
+  // duration never accumulates into future deadlines (drift-free). Under
+  // overload, a signal served late gets its next period measured from its
+  // (already late) serve time, which is intentional EDF back-pressure given
+  // the K-line budget -- see the loop comment above. Do not "fix" this by
+  // moving the assignment after read_pid() (computes the same value, since
+  // now_ms doesn't change) or by `+= interval` anchoring (lets backlog grow
+  // unbounded under sustained overload).
   next_due_ms_[due_index] = now_ms + tier_interval_ms(tier);
 
   out_reading->signal = wf.signal;
