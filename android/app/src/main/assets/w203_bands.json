@@ -1,0 +1,27 @@
+[
+  {
+    "signal": "MAF_GS", "context": "warm_idle", "lo": 3.0, "hi": 5.0,
+    "unit": "g/s", "confidence": "Confirmed",
+    "hint": "Warm-idle MAF outside 3–5 g/s: check intake/breather leaks first (the classic M271 fault)"
+  },
+  {
+    "signal": "STFT1", "context": "always", "lo": -10.0, "hi": 10.0,
+    "unit": "%", "confidence": "Confirmed",
+    "hint": "Short-term trim beyond ±10%: active mixture correction — watch LTFT"
+  },
+  {
+    "signal": "LTFT1", "context": "always", "lo": -10.0, "hi": 10.0,
+    "unit": "%", "confidence": "Confirmed",
+    "hint": "LTFT high at warm idle: classic M271 partial-load breather-hose leak — see guide §2 tree"
+  },
+  {
+    "signal": "ECT", "context": "warm_idle", "lo": 87.0, "hi": 95.0,
+    "unit": "°C", "confidence": "Best estimate",
+    "hint": "Warm idle should settle 87–95 °C (thermostat opens at 87 °C)"
+  },
+  {
+    "signal": "BATT_V_ADC", "context": "always", "lo": 13.8, "hi": 14.5,
+    "unit": "V", "confidence": "Confirmed",
+    "hint": "Engine-running voltage outside 13.8–14.5 V: charging-system check"
+  }
+]

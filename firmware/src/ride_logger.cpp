@@ -59,5 +59,13 @@ void RideLogger::log_reading(uint32_t t_ms, const PidScheduler::Reading& reading
   storage_.write_line(line);
 }
 
+void RideLogger::write_header_line(const char* text) {
+  // 96 bytes covers the longest current caller (8 DTC codes joined with
+  // commas = 8*6-1+11 chars ≈ 58) with margin; snprintf truncates safely.
+  char line[96];
+  snprintf(line, sizeof(line), "#%s", text);
+  storage_.write_line(line);
+}
+
 void RideLogger::flush() { storage_.flush(); }
 void RideLogger::close_ride() { storage_.close(); }

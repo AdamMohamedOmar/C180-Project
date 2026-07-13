@@ -69,6 +69,24 @@ void test_flush_and_close_ride_forward_to_storage(void) {
   TEST_ASSERT_TRUE(storage.closed);
 }
 
+void test_write_header_line_prefixes_hash(void) {
+  FakeStorage storage;
+  RideLogger logger(storage);
+  TEST_ASSERT_TRUE(logger.start_ride("/r.csv", "fw", "init"));
+  logger.write_header_line("dtc_stored=P0171");
+  TEST_ASSERT_EQUAL_STRING("#dtc_stored=P0171", storage.lines.back().c_str());
+}
+
+void test_write_header_line_truncates_instead_of_overflowing(void) {
+  FakeStorage storage;
+  RideLogger logger(storage);
+  TEST_ASSERT_TRUE(logger.start_ride("/r.csv", "fw", "init"));
+  std::string long_text(200, 'x');
+  logger.write_header_line(long_text.c_str());  // must not crash; snprintf truncates
+  TEST_ASSERT_EQUAL_CHAR('#', storage.lines.back()[0]);
+  TEST_ASSERT_TRUE(storage.lines.back().size() < 200);
+}
+
 int main(int argc, char** argv) {
   UNITY_BEGIN();
   RUN_TEST(test_start_ride_writes_header_and_column_row);
@@ -77,5 +95,7 @@ int main(int argc, char** argv) {
   RUN_TEST(test_signal_name_returns_correct_string);
   RUN_TEST(test_start_ride_fails_and_writes_nothing_when_storage_cannot_open);
   RUN_TEST(test_flush_and_close_ride_forward_to_storage);
+  RUN_TEST(test_write_header_line_prefixes_hash);
+  RUN_TEST(test_write_header_line_truncates_instead_of_overflowing);
   return UNITY_END();
 }
