@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KompressorLink — Phase 4.5 UI mockup</title>
+<style>
+  :root{
+    --bg-page:#0B0D0E;
+    --screen-bg:#101416;
+    --card-bg:#1A1F22;
+    --card-border:#262C30;
+    --text-primary:#E8ECEE;
+    --text-secondary:#9AA4AA;
+    --ok:#4CAF7D;
+    --watch:#E0A83C;
+    --attention:#E05B4B;
+    --neutral:#6E8291;
+    --ok-tint:rgba(76,175,125,0.16);
+    --ok-tint-strong:rgba(76,175,125,0.26);
+    --watch-tint:rgba(224,168,60,0.16);
+    --watch-tint-strong:rgba(224,168,60,0.26);
+    --attention-tint:rgba(224,91,75,0.16);
+    --neutral-tint:rgba(110,130,145,0.16);
+    --font-ui:"Bahnschrift","Segoe UI Semibold","Segoe UI",-apple-system,system-ui,sans-serif;
+    --font-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html,body{
+    background:var(--bg-page);
+    color:var(--text-primary);
+    font-family:var(--font-ui);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  body{
+    min-height:100vh;
+    padding:56px 40px 72px;
+    position:relative;
+    overflow-x:auto;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background-image:
+      radial-gradient(circle at 18% 8%, rgba(110,130,145,0.07), transparent 42%),
+      radial-gradient(circle at 88% 55%, rgba(76,175,125,0.045), transparent 48%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.014) 0px, rgba(255,255,255,0.014) 1px, transparent 1px, transparent 64px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.014) 0px, rgba(255,255,255,0.014) 1px, transparent 1px, transparent 64px);
+  }
+
+  .page-container{
+    max-width:1720px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+
+  .page-header{
+    padding:0 8px;
+    margin-bottom:44px;
+  }
+
+  .kicker{
+    font-family:var(--font-mono);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--neutral);
+    margin-bottom:12px;
+  }
+
+  .page-title{
+    font-size:33px;
+    font-weight:700;
+    letter-spacing:.01em;
+    color:var(--text-primary);
+  }
+
+  .page-title span{
+    color:var(--text-secondary);
+    font-weight:600;
+  }
+
+  .page-sub{
+    font-size:13.5px;
+    color:var(--text-secondary);
+    margin-top:8px;
+    max-width:640px;
+    line-height:1.55;
+  }
+
+  /* ---------- phone row ---------- */
+
+  .phone-row{
+    display:flex;
+    align-items:flex-start;
+    gap:44px;
+    overflow-x:auto;
+    padding:6px 8px 28px;
+  }
+
+  .phone-row::-webkit-scrollbar{ height:10px; }
+  .phone-row::-webkit-scrollbar-track{ background:transparent; }
+  .phone-row::-webkit-scrollbar-thumb{ background:#262C30; border-radius:6px; }
+  .phone-row::-webkit-scrollbar-thumb:hover{ background:#333b40; }
+
+  .phone-block{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    flex:0 0 auto;
+  }
+
+  .phone-caption{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--text-secondary);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .phone-caption::before{
+    content:"";
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--neutral);
+  }
+
+  /* ---------- phone frame ---------- */
+
+  .phone-frame{
+    position:relative;
+    width:380px;
+    height:880px;
+    border-radius:52px;
+    background:linear-gradient(160deg,#2b2f32 0%, #101213 38%, #030405 100%);
+    padding:10px;
+    box-shadow:
+      0 40px 70px -24px rgba(0,0,0,0.75),
+      0 2px 0 rgba(255,255,255,0.05) inset,
+      0 0 0 1px rgba(255,255,255,0.035) inset;
+    flex:0 0 auto;
+  }
+
+  .phone-frame .btn{
+    position:absolute;
+    background:linear-gradient(90deg,#232628,#131516);
+    box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset;
+  }
+  .btn-power{
+    right:-2.5px;
+    top:168px;
+    width:3px;
+    height:72px;
+    border-radius:0 3px 3px 0;
+  }
+  .btn-vol1{
+    left:-2.5px;
+    top:140px;
+    width:3px;
+    height:44px;
+    border-radius:3px 0 0 3px;
+  }
+  .btn-vol2{
+    left:-2.5px;
+    top:196px;
+    width:3px;
+    height:44px;
+    border-radius:3px 0 0 3px;
+  }
+
+  .screen{
+    position:relative;
+    width:100%;
+    height:100%;
+    border-radius:44px;
+    background:var(--screen-bg);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.02) inset;
+  }
+
+  .camera-dot{
+    position:absolute;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#04070a;
+    box-shadow:0 0 0 1.5px rgba(255,255,255,0.05), inset 1.5px -1px 1.5px rgba(120,150,180,0.35);
+    z-index:6;
+  }
+
+  /* ---------- OS status bar ---------- */
+
+  .os-bar{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 22px 2px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    color:var(--text-primary);
+  }
+
+  .os-icons{ display:flex; align-items:center; gap:6px; }
+
+  .signal{ display:flex; align-items:flex-end; gap:2px; height:9px; }
+  .signal span{ width:3px; background:var(--text-primary); border-radius:1px; }
+  .signal span:nth-child(1){ height:4px; }
+  .signal span:nth-child(2){ height:6px; }
+  .signal span:nth-child(3){ height:8px; }
+  .signal span:nth-child(4){ height:9px; }
+
+  .batt{
+    position:relative;
+    width:21px;
+    height:10.5px;
+    border:1.2px solid var(--text-primary);
+    border-radius:2.5px;
+    opacity:.95;
+  }
+  .batt::after{
+    content:"";
+    position:absolute;
+    right:-3px;
+    top:2.5px;
+    width:1.6px;
+    height:4.5px;
+    background:var(--text-primary);
+    border-radius:0 1px 1px 0;
+  }
+  .batt-fill{
+    position:absolute;
+    top:1.3px; left:1.3px; bottom:1.3px;
+    width:75%;
+    background:var(--text-primary);
+    border-radius:1px;
+  }
+
+  /* ---------- app banners ---------- */
+
+  .app-banner{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:12px 20px;
+    border-bottom:1px solid var(--card-border);
+    background:rgba(255,255,255,0.012);
+  }
+
+  .banner-left{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:13px;
+    font-weight:700;
+    color:var(--text-primary);
+  }
+
+  .banner-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .pill-sim{
+    border:1px solid var(--card-border);
+    color:var(--text-secondary);
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    padding:4px 9px;
+    border-radius:6px;
+    background:rgba(255,255,255,0.03);
+    cursor:default;
+  }
+
+  .banner-meta{
+    font-size:11px;
+    color:var(--text-secondary);
+  }
+
+  .banner-ribbon{
+    flex:0 0 auto;
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 20px;
+    background:linear-gradient(90deg, rgba(224,168,60,0.22), rgba(224,168,60,0.08));
+    border-bottom:1px solid rgba(224,168,60,0.35);
+    color:var(--watch);
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+
+  .ribbon-icon{ width:14px; height:14px; flex:0 0 auto; }
+
+  /* ---------- dots ---------- */
+
+  .dot{ width:8px; height:8px; border-radius:50%; display:inline-block; flex:0 0 auto; }
+  .dot-ok{ background:var(--ok); box-shadow:0 0 0 4px var(--ok-tint); }
+  .dot-watch{ background:var(--watch); box-shadow:0 0 0 4px var(--watch-tint); }
+  .dot-attn{ background:var(--attention); box-shadow:0 0 0 4px var(--attention-tint); }
+  .dot-neutral{ background:var(--neutral); box-shadow:0 0 0 4px var(--neutral-tint); }
+
+  /* ---------- content area ---------- */
+
+  .content{
+    flex:1 1 auto;
+    overflow-y:auto;
+    padding:16px 16px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .content::-webkit-scrollbar{ width:5px; }
+  .content::-webkit-scrollbar-track{ background:transparent; }
+  .content::-webkit-scrollbar-thumb{ background:#20262a; border-radius:4px; }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:16px;
+    box-shadow:0 10px 20px -16px rgba(0,0,0,0.6);
+  }
+
+  .chip-context{
+    align-self:flex-start;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:var(--neutral-tint);
+    border:1px solid rgba(110,130,145,0.32);
+    color:var(--text-secondary);
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.02em;
+    padding:6px 12px;
+    border-radius:999px;
+  }
+
+  /* ---------- gauge tiles ---------- */
+
+  .tile-title{
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:var(--text-secondary);
+  }
+
+  .tile-value{
+    font-family:var(--font-mono);
+    font-size:28px;
+    font-weight:600;
+    color:var(--text-primary);
+    margin-top:7px;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:-0.01em;
+    display:flex;
+    align-items:baseline;
+    gap:5px;
+  }
+  .tile-value .unit{
+    font-family:var(--font-ui);
+    font-size:12px;
+    font-weight:600;
+    color:var(--text-secondary);
+  }
+  .tile-value.unavailable{ color:var(--text-secondary); opacity:.55; }
+
+  .tile-caption{
+    font-size:11px;
+    color:var(--text-secondary);
+    margin-top:9px;
+    line-height:1.4;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .tile-caption.dim{ font-style:italic; opacity:.8; }
+
+  .band{ margin-top:11px; }
+  .band-track{
+    position:relative;
+    height:6px;
+    border-radius:4px;
+    background:rgba(255,255,255,0.06);
+  }
+  .band-track.simple{ background:var(--ok-tint); }
+  .band-fill-healthy{
+    position:absolute;
+    top:0; bottom:0;
+    border-radius:4px;
+    background:var(--ok-tint-strong);
+  }
+  .band-marker{
+    position:absolute;
+    top:50%;
+    width:10px; height:10px;
+    border-radius:50%;
+    background:var(--text-primary);
+    transform:translate(-50%,-50%);
+    box-shadow:0 0 0 2.5px var(--card-bg), 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .band-marker.watch{ background:var(--watch); }
+  .band-ends{
+    display:flex;
+    justify-content:space-between;
+    margin-top:5px;
+    font-family:var(--font-mono);
+    font-size:9.5px;
+    color:var(--text-secondary);
+    opacity:.75;
+  }
+
+  .spark{ width:100%; height:26px; display:block; margin-top:10px; overflow:visible; }
+  .spark polyline{ fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+  .tile-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .tile{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:14px;
+    min-height:112px;
+    box-shadow:0 10px 20px -16px rgba(0,0,0,0.6);
+  }
+  .tile.unavailable{
+    border-style:dashed;
+    border-color:#333a3f;
+    background:rgba(26,31,34,0.5);
+  }
+
+  /* ---------- fuel trims ---------- */
+
+  .fuel-cols{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-top:12px;
+  }
+  .fuel-col:nth-child(2){
+    border-left:1px solid var(--card-border);
+    padding-left:18px;
+  }
+  .fuel-value{
+    font-family:var(--font-mono);
+    font-size:26px;
+    font-weight:600;
+    color:var(--text-primary);
+    margin-top:6px;
+    font-variant-numeric:tabular-nums;
+  }
+  .fuel-value.watch{ color:var(--watch); }
+
+  .hint-line{
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px dashed rgba(224,168,60,0.28);
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .hint-line svg{ width:14px; height:14px; flex:0 0 auto; margin-top:1px; color:var(--watch); }
+  .hint-line p{ font-size:12px; color:var(--watch); line-height:1.45; }
+
+  /* ---------- section titles / footer note ---------- */
+
+  .section-title{
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.09em;
+    color:var(--text-secondary);
+    margin:2px 2px 0;
+  }
+
+  .footnote-page{
+    font-size:11px;
+    color:var(--text-secondary);
+    font-style:italic;
+    text-align:center;
+    padding:8px 6px 4px;
+    opacity:.85;
+  }
+
+  /* ---------- health screen ---------- */
+
+  .verdict{
+    position:relative;
+    padding-left:20px;
+  }
+  .verdict::before{
+    content:"";
+    position:absolute;
+    left:0; top:13px; bottom:13px;
+    width:4px;
+    border-radius:4px;
+    background:var(--watch);
+  }
+  .verdict-headline{ font-size:19px; font-weight:700; color:var(--text-primary); }
+  .verdict-sub{ font-size:12.5px; color:var(--text-secondary); margin-top:5px; }
+
+  .subsystem-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .subsystem-card{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+  }
+  .subsystem-name{ font-size:13px; font-weight:700; color:var(--text-primary); }
+  .subsystem-status{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .subsystem-status.ok{ color:var(--ok); }
+  .subsystem-status.watch{ color:var(--watch); }
+  .subsystem-status.neutral{ color:var(--neutral); }
+  .subsystem-reason{ font-size:11.5px; color:var(--text-secondary); line-height:1.42; }
+  .subsystem-reason.footnote{ font-style:italic; opacity:.85; font-size:11px; }
+
+  .mini-progress{
+    height:4px;
+    border-radius:2px;
+    background:rgba(255,255,255,0.08);
+    margin-top:1px;
+    overflow:hidden;
+  }
+  .mini-progress-fill{ height:100%; background:var(--neutral); border-radius:2px; }
+
+  .warning-card{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    border-left:3px solid var(--watch);
+    border-radius:14px 16px 16px 14px;
+  }
+  .warning-card.dim{ opacity:.5; border-left-color:var(--card-border); }
+  .warning-text{ font-size:12px; color:var(--text-primary); line-height:1.5; }
+  .warning-row{ display:flex; justify-content:flex-end; }
+  .ack-btn{
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-primary);
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--card-border);
+    padding:5px 11px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .ack-btn:hover{ background:rgba(255,255,255,0.1); }
+  .ack-done{
+    font-size:10.5px;
+    color:var(--text-secondary);
+    font-weight:600;
+  }
+
+  /* ---------- DTC screen ---------- */
+
+  .dtc-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .dtc-code{ font-family:var(--font-mono); font-size:21px; font-weight:700; letter-spacing:.02em; color:var(--text-primary); }
+  .dtc-title{ font-size:14.5px; font-weight:600; color:var(--text-primary); margin-top:9px; line-height:1.35; }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    font-size:10.5px;
+    font-weight:700;
+    padding:4.5px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .chip-amber{ background:var(--watch-tint); color:var(--watch); }
+  .chip-outline{ border:1px solid var(--card-border); color:var(--text-secondary); background:transparent; }
+  .chip-subtle{ background:rgba(255,255,255,0.05); color:var(--text-secondary); }
+  .chip-neutral{ background:var(--neutral-tint); color:var(--neutral); }
+
+  .chip-row{ display:flex; gap:8px; margin-top:11px; flex-wrap:wrap; }
+
+  .dtc-section{ margin-top:15px; }
+  .dtc-section-label{
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--text-secondary);
+    font-weight:700;
+    margin-bottom:5px;
+  }
+  .dtc-section-body{ font-size:12.5px; color:var(--text-primary); opacity:.92; line-height:1.52; }
+
+  .dtc-list{
+    list-style:none;
+    counter-reset:step;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    margin-top:2px;
+  }
+  .dtc-list li{
+    counter-increment:step;
+    display:flex;
+    gap:10px;
+    font-size:12.5px;
+    color:var(--text-primary);
+    line-height:1.4;
+    align-items:flex-start;
+  }
+  .dtc-list li::before{
+    content:counter(step);
+    flex:0 0 auto;
+    width:18px; height:18px;
+    border-radius:50%;
+    background:var(--neutral-tint);
+    color:var(--neutral);
+    font-size:10px;
+    font-weight:700;
+    font-family:var(--font-mono);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:1px;
+  }
+
+  .dtc-callout{
+    margin-top:15px;
+    padding:11px 13px;
+    border-radius:10px;
+    background:rgba(224,168,60,0.07);
+    border-left:3px solid var(--watch);
+    font-size:11.5px;
+    font-style:italic;
+    color:var(--text-secondary);
+    line-height:1.48;
+  }
+
+  .dtc-card.collapsed{
+    padding:14px 16px;
+    opacity:.86;
+  }
+  .dtc-card.collapsed .dtc-code{ font-size:16px; }
+  .dtc-collapsed-title{ font-size:12.5px; font-weight:600; color:var(--text-secondary); }
+  .dtc-collapsed-line{
+    font-size:11.5px;
+    color:var(--text-secondary);
+    margin-top:9px;
+    line-height:1.4;
+  }
+  .chevron{ color:var(--text-secondary); font-size:13px; }
+  .dtc-head-right{ display:flex; align-items:center; gap:10px; }
+
+  /* ---------- maintenance screen ---------- */
+
+  .odo-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--text-secondary); }
+  .odo-value{
+    font-family:var(--font-mono);
+    font-size:32px;
+    font-weight:600;
+    color:var(--text-primary);
+    margin-top:8px;
+    font-variant-numeric:tabular-nums;
+  }
+  .odo-sub{ font-size:11.5px; color:var(--text-secondary); margin-top:8px; line-height:1.45; }
+
+  .btn-outline{
+    margin-top:14px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--text-primary);
+    border:1px solid var(--card-border);
+    padding:9px 15px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.02);
+    cursor:pointer;
+  }
+  .btn-outline:hover{ background:rgba(255,255,255,0.06); border-color:#39424a; }
+
+  .maint-list{ display:flex; flex-direction:column; gap:10px; }
+  .maint-row{ padding:14px 16px; display:flex; flex-direction:column; gap:5px; }
+  .maint-row-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .maint-name{ display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; color:var(--text-primary); }
+  .maint-remaining{ font-size:12.5px; font-weight:700; text-align:right; white-space:nowrap; }
+  .maint-remaining.attn{ color:var(--attention); }
+  .maint-remaining.watch{ color:var(--watch); }
+  .maint-remaining.ok{ color:var(--text-primary); }
+  .maint-sub{ font-size:11px; color:var(--text-secondary); padding-left:17px; line-height:1.4; }
+  .maint-sub.mono{ font-family:var(--font-mono); letter-spacing:.01em; }
+  .maint-sub.tip{ font-style:italic; }
+
+  .fab{
+    position:absolute;
+    right:18px;
+    bottom:92px;
+    background:var(--text-primary);
+    color:#14181B;
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:13px;
+    padding:13px 19px;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    box-shadow:0 14px 26px -8px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.35);
+    z-index:20;
+    cursor:pointer;
+    transition:filter .15s ease;
+  }
+  .fab:hover{ filter:brightness(0.92); }
+
+  /* ---------- bottom nav ---------- */
+
+  .bottom-nav-wrap{
+    flex:0 0 auto;
+    border-top:1px solid var(--card-border);
+    background:#12171A;
+  }
+  .bottom-nav{
+    display:flex;
+    align-items:stretch;
+    padding:6px 6px 2px;
+  }
+  .nav-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    padding:7px 4px 4px;
+    color:var(--text-secondary);
+    cursor:default;
+  }
+  .nav-icon-wrap{
+    width:42px;
+    height:25px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-item.active{ color:var(--text-primary); }
+  .nav-item.active .nav-icon-wrap{ background:rgba(232,236,238,0.12); }
+  .nav-item svg{ width:19px; height:19px; }
+  .nav-label{ font-size:9px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; }
+
+  .home-indicator{
+    width:120px;
+    height:4px;
+    border-radius:3px;
+    background:rgba(255,255,255,0.25);
+    margin:8px auto 10px;
+  }
+
+</style>
+</head>
+<body>
+<div class="page-container">
+
+  <div class="page-header">
+    <div class="kicker">Phase 4.5 — UI design mockup</div>
+    <div class="page-title">Kompressor<span>Link</span></div>
+    <div class="page-sub">Android live-dashboard · Mercedes-Benz W203 C180 Kompressor 2004 (M271.946, SIM4LKE ECU) · static screens, night-driving dark theme.</div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 1 — DASHBOARD                                          -->
+    <!-- ============================================================ -->
+    <div class="phone-block">
+      <div class="phone-caption">Dashboard</div>
+      <div class="phone-frame">
+        <div class="btn btn-power"></div>
+        <div class="btn btn-vol1"></div>
+        <div class="btn btn-vol2"></div>
+        <div class="screen">
+          <div class="camera-dot"></div>
+
+          <div class="os-bar">
+            <span>9:41</span>
+            <span class="os-icons">
+              <span class="signal"><span></span><span></span><span></span><span></span></span>
+              <span class="batt"><span class="batt-fill"></span></span>
+            </span>
+          </div>
+
+          <div class="app-banner">
+            <div class="banner-left">
+              <span class="dot dot-ok"></span>
+              <span>Connected · KompressorLink</span>
+            </div>
+            <div class="banner-right">
+              <span class="pill-sim" title="SIM4LKE ECU">SIM</span>
+            </div>
+          </div>
+
+          <div class="content">
+
+            <div class="chip-context">
+              <span class="dot dot-neutral"></span>
+              Warm idle detected
+            </div>
+
+            <!-- Fuel trims -->
+            <div class="card">
+              <div class="tile-title">Fuel trims</div>
+              <div class="fuel-cols">
+                <div class="fuel-col">
+                  <div class="tile-title">STFT</div>
+                  <div class="fuel-value">+2.1 %</div>
+                  <div class="band">
+                    <div class="band-track">
+                      <div class="band-fill-healthy" style="left:16.67%;width:66.67%;"></div>
+                      <div class="band-marker" style="left:57%;"></div>
+                    </div>
+                    <div class="band-ends"><span>-15</span><span>+15</span></div>
+                  </div>
+                </div>
+                <div class="fuel-col">
+                  <div class="tile-title">LTFT</div>
+                  <div class="fuel-value watch">+8.4 %</div>
+                  <div class="band">
+                    <div class="band-track">
+                      <div class="band-fill-healthy" style="left:16.67%;width:66.67%;"></div>
+                      <div class="band-marker watch" style="left:78%;"></div>
+                    </div>
+                    <div class="band-ends"><span>-15</span><span>+15</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="hint-line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 21 19.5H3z"/><path d="M12 10v4"/><circle cx="12" cy="16.7" r="0.6" fill="currentColor" stroke="none"/></svg>
+                <p>LTFT nearing the +10&nbsp;% limit — classic early sign of a breather-hose leak</p>
+              </div>
+            </div>
+
+            <!-- Tile grid -->
+            <div class="tile-grid">
+
+              <div class="tile">
+                <div class="tile-title">RPM</div>
+                <div class="tile-value">743<span class="unit">rpm</span></div>
+                <div class="band">
+                  <div class="band-track simple">
+                    <div class="band-marker" style="left:47.7%;"></div>
+                  </div>
+                  <div class="band-ends"><span>600</span><span>900</span></div>
+                </div>
+                <svg class="spark" viewBox="0 0 100 26" preserveAspectRatio="none">
+                  <polyline points="0,15 12,13 25,16 37,14 50,12 62,15 75,13 87,14 100,13" style="stroke:var(--ok);opacity:.75;"/>
+                </svg>
+              </div>
+
+              <div class="tile">
+                <div class="tile-title">MAF</div>
+                <div class="tile-value">4.2<span class="unit">g/s</span></div>
+                <div class="band">
+                  <div class="band-track simple">
+                    <div class="band-marker" style="left:60%;"></div>
+                  </div>
+                  <div class="band-ends"><span>3</span><span>5</span></div>
+                </div>
+                <div class="tile-caption">warm-idle band</div>
+              </div>
+
+              <div class="tile">
+                <div class="tile-title">Coolant</div>
+                <div class="tile-value">91<span class="unit">°C</span></div>
+                <div class="band">
+                  <div class="band-track simple">
+                    <div class="band-marker" style="left:50%;"></div>
+                  </div>
+                  <div class="band-ends"><span>87</span><span>95</span></div>
+                </div>
+              </div>
+
+              <div class="tile">
+                <div class="tile-title">MAP</div>
+                <div class="tile-value">98<span class="unit">kPa</span></div>
+              </div>
+
+              <div class="tile">
+                <div class="tile-title">O2 pre-cat</div>
+                <div class="tile-value">0.45<span class="unit">V</span></div>
+                <svg class="spark" viewBox="0 0 100 26" preserveAspectRatio="none">
+                  <polyline points="0,14 10,3 20,24 30,4 40,23 50,5 60,22 70,4 80,23 90,5 100,14" style="stroke:var(--neutral);opacity:.85;"/>
+                </svg>
+              </div>
+
+              <div class="tile">
+                <div class="tile-title">O2 post-cat</div>
+                <div class="tile-value">0.62<span class="unit">V</span></div>
+                <svg class="spark" viewBox="0 0 100 26" preserveAspectRatio="none">
+                  <polyline points="0,16 15,15 30,17 45,16 60,15 75,16 90,17 100,16" style="stroke:var(--neutral);opacity:.85;"/>
+                </svg>
+              </div>
+
+              <div class="tile">
+                <div class="tile-title">Battery</div>
+                <div class="tile-value">14.2<span class="unit">V</span></div>
+                <div class="tile-caption"><span class="dot dot-ok"></span>charging · 13.8–14.5 V</div>
+              </div>
+
+              <div class="tile">
+                <div class="tile-title">Timing</div>
+                <div class="tile-value">12.5<span class="unit">°</span></div>
+              </div>
+
+              <div class="tile unavailable">
+                <div class="tile-title">Pedal position</div>
+                <div class="tile-value unavailable">—</div>
+                <div class="tile-caption dim">Not provided by ECU</div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="bottom-nav-wrap">
+            <div class="bottom-nav">
+              <div class="nav-item active">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16 16 10"/><circle cx="12" cy="16" r="1.3" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">Dashboard</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+                </span>
+                <span class="nav-label">Health</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 21 19.5H3z"/><path d="M12 10v4"/><circle cx="12" cy="16.7" r="0.6" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">DTCs</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L3 17.2V21h3.8l6.3-6.3a4 4 0 0 0 4.6-5.4l-2.8 2.8-2.4-.6-.6-2.4z"/></svg>
+                </span>
+                <span class="nav-label">Maintenance</span>
+              </div>
+            </div>
+            <div class="home-indicator"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 2 — HEALTH                                             -->
+    <!-- ============================================================ -->
+    <div class="phone-block">
+      <div class="phone-caption">Health</div>
+      <div class="phone-frame">
+        <div class="btn btn-power"></div>
+        <div class="btn btn-vol1"></div>
+        <div class="btn btn-vol2"></div>
+        <div class="screen">
+          <div class="camera-dot"></div>
+
+          <div class="os-bar">
+            <span>9:43</span>
+            <span class="os-icons">
+              <span class="signal"><span></span><span></span><span></span><span></span></span>
+              <span class="batt"><span class="batt-fill"></span></span>
+            </span>
+          </div>
+
+          <div class="banner-ribbon">
+            <svg class="ribbon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="16" r="0.6" fill="currentColor" stroke="none"/></svg>
+            Demo data — simulated history
+          </div>
+
+          <div class="content">
+
+            <div class="card verdict">
+              <div class="verdict-headline">Needs a look</div>
+              <div class="verdict-sub">1 system needs attention — Fueling</div>
+            </div>
+
+            <div class="subsystem-grid">
+
+              <div class="card subsystem-card">
+                <div class="subsystem-name">Fueling</div>
+                <div class="subsystem-status watch"><span class="dot dot-watch"></span>Watch</div>
+                <div class="subsystem-reason">LTFT drifting up ~0.4&nbsp;%/week ↗</div>
+              </div>
+
+              <div class="card subsystem-card">
+                <div class="subsystem-name">Air / Intake</div>
+                <div class="subsystem-status ok"><span class="dot dot-ok"></span>OK</div>
+                <div class="subsystem-reason">MAF idle normal for your car</div>
+              </div>
+
+              <div class="card subsystem-card">
+                <div class="subsystem-name">Cooling</div>
+                <div class="subsystem-status ok"><span class="dot dot-ok"></span>OK</div>
+                <div class="subsystem-reason">Settles 89–92 °C</div>
+              </div>
+
+              <div class="card subsystem-card">
+                <div class="subsystem-name">Ignition</div>
+                <div class="subsystem-status ok"><span class="dot dot-ok"></span>OK</div>
+                <div class="subsystem-reason footnote">DTC-based — no live misfire data on this ECU</div>
+              </div>
+
+              <div class="card subsystem-card">
+                <div class="subsystem-name">Exhaust / Cat</div>
+                <div class="subsystem-status neutral"><span class="dot dot-neutral"></span>Collecting</div>
+                <div class="subsystem-reason">Collecting baseline · 5 of 8 drives</div>
+                <div class="mini-progress"><div class="mini-progress-fill" style="width:62.5%;"></div></div>
+              </div>
+
+              <div class="card subsystem-card">
+                <div class="subsystem-name">Battery</div>
+                <div class="subsystem-status ok"><span class="dot dot-ok"></span>OK</div>
+                <div class="subsystem-reason">Rest 12.6 V · Charging 14.2 V</div>
+              </div>
+
+            </div>
+
+            <div class="section-title">Warnings</div>
+
+            <div class="card warning-card">
+              <div class="warning-text">Today 18:42 · LTFT beyond your car's normal at warm idle (+8.4&nbsp;% vs typical +4&nbsp;±&nbsp;2&nbsp;%)</div>
+              <div class="warning-row"><span class="ack-btn">Acknowledge</span></div>
+            </div>
+
+            <div class="card warning-card dim">
+              <div class="warning-text">Jul 9 · Battery rest voltage low (12.1 V) before start — acknowledged</div>
+              <div class="warning-row"><span class="ack-done">✓ Acknowledged</span></div>
+            </div>
+
+            <div class="footnote-page">Drift forecasts unlock after 8 real drives across 2 weeks.</div>
+
+          </div>
+
+          <div class="bottom-nav-wrap">
+            <div class="bottom-nav">
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16 16 10"/><circle cx="12" cy="16" r="1.3" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">Dashboard</span>
+              </div>
+              <div class="nav-item active">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+                </span>
+                <span class="nav-label">Health</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 21 19.5H3z"/><path d="M12 10v4"/><circle cx="12" cy="16.7" r="0.6" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">DTCs</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L3 17.2V21h3.8l6.3-6.3a4 4 0 0 0 4.6-5.4l-2.8 2.8-2.4-.6-.6-2.4z"/></svg>
+                </span>
+                <span class="nav-label">Maintenance</span>
+              </div>
+            </div>
+            <div class="home-indicator"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 3 — DTCs                                               -->
+    <!-- ============================================================ -->
+    <div class="phone-block">
+      <div class="phone-caption">DTCs</div>
+      <div class="phone-frame">
+        <div class="btn btn-power"></div>
+        <div class="btn btn-vol1"></div>
+        <div class="btn btn-vol2"></div>
+        <div class="screen">
+          <div class="camera-dot"></div>
+
+          <div class="os-bar">
+            <span>9:44</span>
+            <span class="os-icons">
+              <span class="signal"><span></span><span></span><span></span><span></span></span>
+              <span class="batt"><span class="batt-fill"></span></span>
+            </span>
+          </div>
+
+          <div class="app-banner">
+            <div class="banner-left">
+              <span class="dot dot-watch"></span>
+              <span>1 stored · 0 pending</span>
+            </div>
+            <div class="banner-right">
+              <span class="banner-meta">Last scan: just now</span>
+            </div>
+          </div>
+
+          <div class="content">
+
+            <div class="card dtc-card">
+              <div class="dtc-head">
+                <span class="dtc-code">P0171</span>
+                <span class="chip chip-amber">Check soon</span>
+              </div>
+              <div class="dtc-title">Engine running too lean (bank 1)</div>
+              <div class="chip-row">
+                <span class="chip chip-outline">W203-specific</span>
+                <span class="chip chip-subtle">Confidence: Confirmed</span>
+              </div>
+
+              <div class="dtc-section">
+                <div class="dtc-section-label">What's happening</div>
+                <div class="dtc-section-body">The engine is getting more air than the fuel math expects, so the computer keeps adding fuel to compensate.</div>
+              </div>
+
+              <div class="dtc-section">
+                <div class="dtc-section-label">Can I keep driving?</div>
+                <div class="dtc-section-body">Yes, for now — but sustained lean running can slowly damage the catalyst.</div>
+              </div>
+
+              <div class="dtc-section">
+                <div class="dtc-section-label">Check first</div>
+                <ol class="dtc-list">
+                  <li>Partial-load breather hoses (<strong>THE</strong> M271 weak spot)</li>
+                  <li>Intake leaks after the MAF</li>
+                  <li>MAF sensor readings</li>
+                  <li>Fuel pressure</li>
+                </ol>
+              </div>
+
+              <div class="dtc-callout">On this engine, cracked breather hoses cause this code far more often than a failing MAF.</div>
+            </div>
+
+            <div class="card dtc-card collapsed">
+              <div class="dtc-head">
+                <div class="dtc-head-right">
+                  <span class="dtc-code">P0455</span>
+                  <span class="dtc-collapsed-title">Large EVAP leak</span>
+                </div>
+                <span class="chevron">▾</span>
+              </div>
+              <div class="chip-row">
+                <span class="chip chip-outline">Generic OBD-II</span>
+                <span class="chip chip-neutral">Info</span>
+              </div>
+              <div class="dtc-collapsed-line">Often just a loose or worn fuel cap…</div>
+            </div>
+
+            <div class="footnote-page">Clearing codes is not available in this version.</div>
+
+          </div>
+
+          <div class="bottom-nav-wrap">
+            <div class="bottom-nav">
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16 16 10"/><circle cx="12" cy="16" r="1.3" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">Dashboard</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+                </span>
+                <span class="nav-label">Health</span>
+              </div>
+              <div class="nav-item active">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 21 19.5H3z"/><path d="M12 10v4"/><circle cx="12" cy="16.7" r="0.6" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">DTCs</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L3 17.2V21h3.8l6.3-6.3a4 4 0 0 0 4.6-5.4l-2.8 2.8-2.4-.6-.6-2.4z"/></svg>
+                </span>
+                <span class="nav-label">Maintenance</span>
+              </div>
+            </div>
+            <div class="home-indicator"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 4 — MAINTENANCE                                        -->
+    <!-- ============================================================ -->
+    <div class="phone-block">
+      <div class="phone-caption">Maintenance</div>
+      <div class="phone-frame">
+        <div class="btn btn-power"></div>
+        <div class="btn btn-vol1"></div>
+        <div class="btn btn-vol2"></div>
+        <div class="screen">
+          <div class="camera-dot"></div>
+
+          <div class="os-bar">
+            <span>9:46</span>
+            <span class="os-icons">
+              <span class="signal"><span></span><span></span><span></span><span></span></span>
+              <span class="batt"><span class="batt-fill"></span></span>
+            </span>
+          </div>
+
+          <div class="app-banner">
+            <div class="banner-left">
+              <span class="dot dot-ok"></span>
+              <span>Connected · KompressorLink</span>
+            </div>
+            <div class="banner-right">
+              <span class="pill-sim" title="SIM4LKE ECU">SIM</span>
+            </div>
+          </div>
+
+          <div class="content">
+
+            <div class="card">
+              <div class="odo-label">Odometer</div>
+              <div class="odo-value">≈ 187,450 km</div>
+              <div class="odo-sub">Last entered: 186,900 km · Jul 1 · +550 km estimated from drives</div>
+              <span class="btn-outline">Update odometer</span>
+            </div>
+
+            <div class="maint-list">
+
+              <div class="card maint-row">
+                <div class="maint-row-top">
+                  <div class="maint-name"><span class="dot dot-attn"></span>Brake fluid</div>
+                  <div class="maint-remaining attn">Overdue by 3 months</div>
+                </div>
+                <div class="maint-sub">Last: Mar 2024</div>
+              </div>
+
+              <div class="card maint-row">
+                <div class="maint-row-top">
+                  <div class="maint-name"><span class="dot dot-watch"></span>Engine oil + filter</div>
+                  <div class="maint-remaining watch">420 km or 3 weeks left</div>
+                </div>
+                <div class="maint-sub">Last: 182,500 km · Feb 2026</div>
+              </div>
+
+              <div class="card maint-row">
+                <div class="maint-row-top">
+                  <div class="maint-name"><span class="dot dot-watch"></span>Breather-hose inspection</div>
+                  <div class="maint-remaining watch">Due with next oil change</div>
+                </div>
+                <div class="maint-sub tip">Cheap prevention for <strong>THE</strong> M271 failure</div>
+              </div>
+
+              <div class="card maint-row">
+                <div class="maint-row-top">
+                  <div class="maint-name"><span class="dot dot-ok"></span>Spark plugs</div>
+                  <div class="maint-remaining ok">12,400 km left</div>
+                </div>
+                <div class="maint-sub mono">FR6MPP332 / NGK ILFR6A</div>
+              </div>
+
+              <div class="card maint-row">
+                <div class="maint-row-top">
+                  <div class="maint-name"><span class="dot dot-ok"></span>Transmission service (722.6)</div>
+                  <div class="maint-remaining ok">18,000 km left</div>
+                </div>
+                <div class="maint-sub tip">'Lifetime fill' is a myth — service it</div>
+              </div>
+
+              <div class="card maint-row">
+                <div class="maint-row-top">
+                  <div class="maint-name"><span class="dot dot-ok"></span>Coolant</div>
+                  <div class="maint-remaining ok">2.1 years left</div>
+                </div>
+              </div>
+
+              <div class="card maint-row">
+                <div class="maint-row-top">
+                  <div class="maint-name"><span class="dot dot-ok"></span>Air filter</div>
+                  <div class="maint-remaining ok">9,200 km left</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="fab">+ Log service</span>
+
+          <div class="bottom-nav-wrap">
+            <div class="bottom-nav">
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16 16 10"/><circle cx="12" cy="16" r="1.3" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">Dashboard</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+                </span>
+                <span class="nav-label">Health</span>
+              </div>
+              <div class="nav-item">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 21 19.5H3z"/><path d="M12 10v4"/><circle cx="12" cy="16.7" r="0.6" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <span class="nav-label">DTCs</span>
+              </div>
+              <div class="nav-item active">
+                <span class="nav-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L3 17.2V21h3.8l6.3-6.3a4 4 0 0 0 4.6-5.4l-2.8 2.8-2.4-.6-.6-2.4z"/></svg>
+                </span>
+                <span class="nav-label">Maintenance</span>
+              </div>
+            </div>
+            <div class="home-indicator"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
