@@ -30,20 +30,35 @@ class KlineKwp {
   // consecutive_timeouts() rather than blocking or erroring.
   bool read_pid(uint8_t mode01_pid, float* out_value);
 
-  // Mode 03 (stored) / Mode 07 (pending) DTC reads. Response format
-  // expected: [SID_positive][count][2 bytes per DTC]. The explicit count
-  // byte mirrors kl_sim/protocol.py's build_dtc_response and is [Guessing]
-  // for the real SIM4LKE — real K-line J1979 Mode 03 typically has no
-  // count byte (count implicit in frame length, possibly CAN-style framing
-  // borrowed by the sim). Phase 3's car probe settles it; the fix lands
-  // HERE and nothing downstream changes (everything speaks DtcList).
-  // Truncates defensively: count is clamped to the pairs actually present
-  // in the frame, then to kMaxDtcs.
+  // Mode 03 (stored) / Mode 07 (pending) DTC reads. Accepts BOTH known
+  // response layouts, discriminated by the frame's own data-length parity
+  // [Best estimate — assumes well-formed frames; the two layouts are
+  // parity-disjoint by construction]:
+  //   implicit  [SID][2 bytes per DTC]         (odd data_len) — standard
+  //     J1979-over-K-line; [Likely] what the real SIM4LKE sends. Phase 3's
+  //     car probe confirms which layout the car actually uses.
+  //   explicit  [SID][count][2 bytes per DTC]  (even data_len) — the layout
+  //     kl_sim's build_dtc_response used through Phase 4 [Confirmed against
+  //     that code]; kept as a hedge should the real ECU use it.
+  // 0x0000 pairs are dropped in both layouts (J1979 ECUs pad short DTC
+  // responses with empty slots; P0000 is not a real code). Truncates
+  // defensively: never reads pairs beyond what the frame physically
+  // carries, caps at kMaxDtcs. Multi-frame DTC paging is out of scope
+  // until the Phase 3 probe shows whether this ECU pages at all.
   bool read_stored_dtcs(DtcList* out);
   bool read_pending_dtcs(DtcList* out);
 
   int consecutive_timeouts() const { return consecutive_timeouts_; }
   bool needs_reinit() const { return consecutive_timeouts_ >= 3; }
+
+  // Requests that failed to BUILD (payload too big for the TX buffer) — a
+  // caller bug, deliberately kept out of consecutive_timeouts() so a
+  // software defect can never masquerade as a dead link, suppress the
+  // kline_connected flag, and trigger pointless bus re-inits. No current
+  // public API can produce this (largest request is read_pid's 2 bytes);
+  // it exists for future callers with bigger payloads (e.g. Phase 7
+  // module scans).
+  int request_build_failures() const { return request_build_failures_; }
 
  private:
   bool send_request_and_get_response(const uint8_t* data, uint8_t data_len, ParsedFrame* out);
@@ -51,4 +66,5 @@ class KlineKwp {
 
   KLineTransport& transport_;
   int consecutive_timeouts_ = 0;
+  int request_build_failures_ = 0;
 };

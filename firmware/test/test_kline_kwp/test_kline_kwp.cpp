@@ -163,6 +163,89 @@ void test_successful_read_resets_consecutive_timeouts(void) {
   TEST_ASSERT_EQUAL_INT(0, kwp.consecutive_timeouts());
 }
 
+void test_request_echo_followed_by_real_response_succeeds(void) {
+  // Real half-duplex K-line: the RX window contains our own transmitted
+  // request first (self-echo), then the genuine ECU response. The exchange
+  // must skip the echo and succeed -- otherwise the device can never talk
+  // to the real car (Phase 2/3 hardware always echoes).
+  FakeTransport transport;
+  uint8_t echo[16];
+  const uint8_t request_data[] = {0x81};  // what start_communication sends
+  size_t echo_len = kline_build_frame(kTargetAddress, kTesterAddress, request_data, 1, echo, sizeof(echo));
+  uint8_t response[16];
+  const uint8_t response_data[] = {0xC1, 0x8F, 0xE9};
+  size_t response_len =
+      kline_build_frame(kTesterAddress, kTargetAddress, response_data, 3, response, sizeof(response));
+  std::vector<uint8_t> window(echo, echo + echo_len);
+  window.insert(window.end(), response, response + response_len);
+  transport.queue_response(window);
+
+  KlineKwp kwp(transport);
+  TEST_ASSERT_TRUE(kwp.start_communication());
+  TEST_ASSERT_EQUAL_INT(0, kwp.consecutive_timeouts());
+}
+
+void test_echo_with_no_ecu_response_still_counts_toward_reinit(void) {
+  // ECU offline but the hardware still echoes every request: hearing our
+  // own voice is NOT a healthy link. Each exchange must count as a timeout
+  // so needs_reinit() fires after 3 -- the failure mode the 2026-07-16
+  // audit feared (link stuck looking alive on echoes) must stay impossible.
+  FakeTransport transport;
+  KlineKwp kwp(transport);
+  uint8_t echo[16];
+  const uint8_t request_data[] = {0x81};
+  size_t echo_len = kline_build_frame(kTargetAddress, kTesterAddress, request_data, 1, echo, sizeof(echo));
+  for (int i = 0; i < 3; ++i) {
+    transport.queue_response(std::vector<uint8_t>(echo, echo + echo_len));
+    TEST_ASSERT_FALSE(kwp.start_communication());
+  }
+  TEST_ASSERT_TRUE(kwp.needs_reinit());
+}
+
+void test_partial_frame_in_window_counts_as_timeout(void) {
+  // Only the first 3 bytes of a response arrived before the window closed.
+  FakeTransport transport;
+  uint8_t frame[16];
+  const uint8_t response_data[] = {0xC1, 0x8F, 0xE9};
+  kline_build_frame(kTesterAddress, kTargetAddress, response_data, 3, frame, sizeof(frame));
+  transport.queue_response(std::vector<uint8_t>(frame, frame + 3));
+
+  KlineKwp kwp(transport);
+  TEST_ASSERT_FALSE(kwp.start_communication());
+  TEST_ASSERT_EQUAL_INT(1, kwp.consecutive_timeouts());
+}
+
+void test_bytes_trailing_a_valid_response_are_ignored(void) {
+  // A complete valid response followed by the first bytes of something
+  // else (late noise, next frame's start) must not spoil the exchange.
+  FakeTransport transport;
+  uint8_t frame[16];
+  const uint8_t response_data[] = {0xC1, 0x8F, 0xE9};
+  size_t len = kline_build_frame(kTesterAddress, kTargetAddress, response_data, 3, frame, sizeof(frame));
+  std::vector<uint8_t> window(frame, frame + len);
+  window.push_back(0x83);  // stray first bytes of a later frame
+  window.push_back(0xF1);
+  transport.queue_response(window);
+
+  KlineKwp kwp(transport);
+  TEST_ASSERT_TRUE(kwp.start_communication());
+  TEST_ASSERT_EQUAL_INT(0, kwp.consecutive_timeouts());
+}
+
+void test_link_timeouts_are_not_build_failures(void) {
+  // The two failure classes stay separate: a silent ECU moves only
+  // consecutive_timeouts(); request_build_failures() moves only on an
+  // oversized request payload, which no current public API can produce
+  // (largest request is read_pid's 2 bytes -- the branch is future-proofing
+  // for bigger Phase 7 payloads and is pinned here from the observable side).
+  FakeTransport transport;
+  KlineKwp kwp(transport);
+  float value = 0.0f;
+  TEST_ASSERT_FALSE(kwp.read_pid(0x0C, &value));
+  TEST_ASSERT_EQUAL_INT(1, kwp.consecutive_timeouts());
+  TEST_ASSERT_EQUAL_INT(0, kwp.request_build_failures());
+}
+
 int main(int argc, char** argv) {
   UNITY_BEGIN();
   RUN_TEST(test_start_communication_succeeds_on_positive_response);
@@ -178,5 +261,10 @@ int main(int argc, char** argv) {
   RUN_TEST(test_read_pid_rejects_truncated_response_instead_of_reading_garbage);
   RUN_TEST(test_needs_reinit_becomes_true_after_3_consecutive_timeouts);
   RUN_TEST(test_successful_read_resets_consecutive_timeouts);
+  RUN_TEST(test_request_echo_followed_by_real_response_succeeds);
+  RUN_TEST(test_echo_with_no_ecu_response_still_counts_toward_reinit);
+  RUN_TEST(test_partial_frame_in_window_counts_as_timeout);
+  RUN_TEST(test_bytes_trailing_a_valid_response_are_ignored);
+  RUN_TEST(test_link_timeouts_are_not_build_failures);
   return UNITY_END();
 }

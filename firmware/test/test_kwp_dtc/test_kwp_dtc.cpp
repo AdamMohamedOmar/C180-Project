@@ -19,8 +19,9 @@ void queue_ecu_response(FakeTransport& transport, const uint8_t* data, uint8_t d
 
 void test_read_stored_dtcs_parses_single_p0171(void) {
   FakeTransport transport;
-  // Mirrors kl_sim/protocol.py build_dtc_response(0x43, ["P0171"]):
-  // SID 0x43, count 1, then J2012 bytes 0x01 0x71.
+  // Legacy explicit-count layout: SID 0x43, count 1, then J2012 bytes
+  // 0x01 0x71. This was kl_sim's format through Phase 4; kept supported as
+  // a hedge in case the real ECU uses it (see kline_kwp.h contract).
   const uint8_t response[] = {0x43, 0x01, 0x01, 0x71};
   queue_ecu_response(transport, response, 4);
 
@@ -107,6 +108,77 @@ void test_read_stored_dtcs_caps_at_kmaxdtcs(void) {
   TEST_ASSERT_EQUAL_HEX16(0x0107, dtcs.codes[7]);
 }
 
+void test_read_stored_dtcs_parses_implicit_format_without_count_byte(void) {
+  FakeTransport transport;
+  // Standard J1979-over-K-line layout: no count byte, the count is implicit
+  // in the frame's own length. [Likely] the real SIM4LKE's format -- the
+  // Phase 3 car probe confirms.
+  const uint8_t response[] = {0x43, 0x01, 0x71};
+  queue_ecu_response(transport, response, 3);
+
+  KlineKwp kwp(transport);
+  DtcList dtcs;
+  TEST_ASSERT_TRUE(kwp.read_stored_dtcs(&dtcs));
+  TEST_ASSERT_EQUAL_UINT8(1, dtcs.count);
+  TEST_ASSERT_EQUAL_HEX16(0x0171, dtcs.codes[0]);
+}
+
+void test_read_stored_dtcs_parses_implicit_empty_response(void) {
+  FakeTransport transport;
+  // Zero stored DTCs in the implicit layout is a bare positive SID.
+  const uint8_t response[] = {0x43};
+  queue_ecu_response(transport, response, 1);
+
+  KlineKwp kwp(transport);
+  DtcList dtcs;
+  dtcs.count = 5;  // stale garbage that must be overwritten
+  TEST_ASSERT_TRUE(kwp.read_stored_dtcs(&dtcs));
+  TEST_ASSERT_EQUAL_UINT8(0, dtcs.count);
+}
+
+void test_read_stored_dtcs_drops_zero_padding_pairs(void) {
+  FakeTransport transport;
+  // J1979 ECUs commonly pad the DTC response to 3 slots with 0x0000 pairs;
+  // P0000 is not a real code and must not surface as one.
+  const uint8_t response[] = {0x43, 0x01, 0x71, 0x00, 0x00, 0x00, 0x00};
+  queue_ecu_response(transport, response, 7);
+
+  KlineKwp kwp(transport);
+  DtcList dtcs;
+  TEST_ASSERT_TRUE(kwp.read_stored_dtcs(&dtcs));
+  TEST_ASSERT_EQUAL_UINT8(1, dtcs.count);
+  TEST_ASSERT_EQUAL_HEX16(0x0171, dtcs.codes[0]);
+  TEST_ASSERT_EQUAL_HEX16(0x0000, dtcs.codes[1]);
+}
+
+void test_read_stored_dtcs_implicit_format_caps_at_kmaxdtcs(void) {
+  FakeTransport transport;
+  // 10 pairs on the wire, no count byte -- keep only the first 8.
+  uint8_t response[1 + 20];
+  response[0] = 0x43;
+  for (uint8_t i = 0; i < 10; ++i) {
+    response[1 + 2 * i] = 0x01;
+    response[2 + 2 * i] = static_cast<uint8_t>(i + 1);  // 0x0101..0x010A, all nonzero
+  }
+  queue_ecu_response(transport, response, sizeof(response));
+
+  KlineKwp kwp(transport);
+  DtcList dtcs;
+  TEST_ASSERT_TRUE(kwp.read_stored_dtcs(&dtcs));
+  TEST_ASSERT_EQUAL_UINT8(8, dtcs.count);
+  TEST_ASSERT_EQUAL_HEX16(0x0108, dtcs.codes[7]);
+}
+
+void test_read_stored_dtcs_rejects_empty_data_frame(void) {
+  FakeTransport transport;
+  // A checksum-valid frame with zero data bytes carries no SID at all.
+  queue_ecu_response(transport, nullptr, 0);
+
+  KlineKwp kwp(transport);
+  DtcList dtcs;
+  TEST_ASSERT_FALSE(kwp.read_stored_dtcs(&dtcs));
+}
+
 void test_dtc_code_to_string_renders_p0171(void) {
   char out[6];
   dtc_code_to_string(0x0171, out);
@@ -129,6 +201,11 @@ int main(int argc, char** argv) {
   RUN_TEST(test_read_stored_dtcs_fails_on_no_response);
   RUN_TEST(test_read_stored_dtcs_clamps_count_to_pairs_actually_in_frame);
   RUN_TEST(test_read_stored_dtcs_caps_at_kmaxdtcs);
+  RUN_TEST(test_read_stored_dtcs_parses_implicit_format_without_count_byte);
+  RUN_TEST(test_read_stored_dtcs_parses_implicit_empty_response);
+  RUN_TEST(test_read_stored_dtcs_drops_zero_padding_pairs);
+  RUN_TEST(test_read_stored_dtcs_implicit_format_caps_at_kmaxdtcs);
+  RUN_TEST(test_read_stored_dtcs_rejects_empty_data_frame);
   RUN_TEST(test_dtc_code_to_string_renders_p0171);
   RUN_TEST(test_dtc_code_to_string_renders_c_letter_code);
   return UNITY_END();

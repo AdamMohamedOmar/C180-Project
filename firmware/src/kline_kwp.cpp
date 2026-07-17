@@ -3,48 +3,57 @@
 #include "kline_frame.h"
 #include "pid_wire_format.h"
 
-// 32 bytes covers every current request/response: the largest is now a
-// Mode 03 response at its defensive cap (3-byte header + SID + count +
-// 8*2 DTC bytes + checksum = 22). Revisit if a later phase adds a request
-// needing a payload anywhere near kline_frame.h's protocol-max
-// kKlineMaxDataLen (63).
+// The 32-byte TX buffer covers every current request with headroom: the
+// largest is read_pid's 2-byte payload (3-byte header + 2 + checksum = 6).
+// Revisit if a later phase adds a request needing a payload anywhere near
+// kline_frame.h's protocol-max kKlineMaxDataLen (63).
 bool KlineKwp::send_request_and_get_response(const uint8_t* data, uint8_t data_len, ParsedFrame* out) {
   uint8_t frame[32];
   size_t frame_len = kline_build_frame(kTargetAddress, kTesterAddress, data, data_len, frame, sizeof(frame));
   if (frame_len == 0) {
-    // data_len exceeded kKlineMaxDataLen or didn't fit in `frame` -- a
-    // caller bug, not a live-ECU timeout. Fail the same way a timeout
-    // would (rather than write nothing and silently wait out the full
-    // response window for a request that was never actually sent), so
-    // this is at least visible as a repeated failure instead of a mystery
-    // stall.
-    ++consecutive_timeouts_;
+    // data_len exceeded kKlineMaxDataLen or didn't fit in `frame`. That is
+    // a caller bug, NOT a live-ECU timeout: it must not feed needs_reinit()
+    // and provoke pointless bus re-inits, so it gets its own counter (see
+    // request_build_failures() in the header). No serial logging here --
+    // this file stays Arduino-free so the native test env can compile it.
+    ++request_build_failures_;
     return false;
   }
   transport_.write(frame, frame_len);
 
-  uint8_t response[32];
-  size_t response_len = transport_.read(response, sizeof(response), kResponseTimeoutMs);
-  if (response_len == 0 || !kline_parse_frame(response, response_len, out)) {
-    ++consecutive_timeouts_;
-    return false;
+  // On real half-duplex K-line hardware every byte we transmit is also
+  // received (single-wire bus), so the read window typically returns our
+  // own request echo followed by the ECU's response, back to back. Read
+  // the whole window into one buffer and scan it frame by frame (each
+  // frame's length comes from its own format byte), skipping any
+  // well-formed frame that is not addressed ECU->tester -- a self-echo has
+  // target/source exactly reversed. Phase 1's direct-UART bench link
+  // produces no echo and resolves on the first frame, unchanged. A frame
+  // that fails to parse (bad checksum, truncated tail) aborts the scan --
+  // no byte-level resync attempt; the exchange fails and the caller
+  // retries.
+  uint8_t rx[64];  // request echo (frame <= 32) + response (frame <= 32)
+  const size_t rx_len = transport_.read(rx, sizeof(rx), kResponseTimeoutMs);
+  size_t pos = 0;
+  while (rx_len - pos >= 4) {
+    const size_t flen = 3 + (rx[pos] & kKlineMaxDataLen) + 1;
+    if (pos + flen > rx_len || !kline_parse_frame(&rx[pos], flen, out)) {
+      break;
+    }
+    if (out->target == kTesterAddress && out->source == kTargetAddress) {
+      // Resets on any well-formed, correctly-addressed reply -- including
+      // one a caller (e.g. read_pid) goes on to reject for wrong SID/PID
+      // content. This intentionally tracks "is the K-line link alive" (are
+      // we getting parseable frames back at all), not "did this specific
+      // request get the answer we wanted" -- an ECU declining one PID
+      // doesn't mean the link is dead and doesn't warrant a full re-init.
+      consecutive_timeouts_ = 0;
+      return true;
+    }
+    pos += flen;  // echo or foreign traffic -- skip it and keep scanning
   }
-  if (out->target != kTesterAddress || out->source != kTargetAddress) {
-    // Real half-duplex K-line hardware can echo the request back on RX;
-    // a self-echo has target/source exactly reversed from a genuine ECU
-    // response. Not reachable on Phase 1's direct-UART bench link (no
-    // echo), but cheap to guard now ahead of Phase 2/3 real hardware.
-    ++consecutive_timeouts_;
-    return false;
-  }
-  // Resets on any well-formed, correctly-addressed reply -- including one
-  // a caller (e.g. read_pid) goes on to reject for wrong SID/PID content.
-  // This intentionally tracks "is the K-line link alive" (are we getting
-  // parseable frames back at all), not "did this specific request get the
-  // answer we wanted" -- an ECU declining one PID doesn't mean the link
-  // is dead and doesn't warrant a full re-init.
-  consecutive_timeouts_ = 0;
-  return true;
+  ++consecutive_timeouts_;
+  return false;
 }
 
 bool KlineKwp::start_communication() {
@@ -98,22 +107,30 @@ bool KlineKwp::read_dtcs(uint8_t request_sid, uint8_t positive_sid, DtcList* out
   if (!send_request_and_get_response(data, 1, &response)) {
     return false;
   }
-  if (response.data_len < 2 || response.data[0] != positive_sid) {
+  if (response.data_len < 1 || response.data[0] != positive_sid) {
     return false;
   }
-  // Clamp twice: to the pairs physically present in the frame (a frame
-  // claiming more DTCs than it carries must never read unwritten bytes),
-  // then to kMaxDtcs (defensive cap, see dtc_list.h).
-  const uint8_t pairs_in_frame = static_cast<uint8_t>((response.data_len - 2) / 2);
-  uint8_t n = response.data[1];
-  if (n > pairs_in_frame) n = pairs_in_frame;
-  if (n > kMaxDtcs) n = kMaxDtcs;
-  out->count = n;
+  // Layout by data-length parity (see the header contract): odd data_len is
+  // [SID][pairs...] (count implicit in frame length), even data_len is
+  // [SID][count][pairs...]. Both defensive clamps survive in either layout:
+  // never read pairs beyond what the frame physically carries, never store
+  // more than kMaxDtcs. 0x0000 pairs are padding, not codes -- skipped.
+  const bool has_count_byte = (response.data_len % 2) == 0;
+  const uint8_t first = has_count_byte ? 2 : 1;
+  uint8_t pairs = static_cast<uint8_t>((response.data_len - first) / 2);
+  if (has_count_byte && response.data[1] < pairs) {
+    pairs = response.data[1];
+  }
+  out->count = 0;
   for (uint8_t i = 0; i < kMaxDtcs; ++i) {
     out->codes[i] = 0;
   }
-  for (uint8_t i = 0; i < n; ++i) {
-    out->codes[i] = static_cast<uint16_t>((response.data[2 + 2 * i] << 8) | response.data[3 + 2 * i]);
+  for (uint8_t i = 0; i < pairs && out->count < kMaxDtcs; ++i) {
+    const uint16_t code = static_cast<uint16_t>((response.data[first + 2 * i] << 8) |
+                                                response.data[first + 2 * i + 1]);
+    if (code != 0) {
+      out->codes[out->count++] = code;
+    }
   }
   return true;
 }

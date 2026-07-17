@@ -55,8 +55,16 @@ def test_encode_dtc_p0171_matches_sae_j2012():
 
 
 def test_build_dtc_response_stored_dtcs():
+    # Standard J1979-over-K-line layout: no count byte, count implicit in
+    # the frame's own length field (matches firmware read_dtcs's [Likely]
+    # branch for the real ECU).
     _, _, data = parse_frame(build_dtc_response(sid_positive=0x43, dtcs=["P0171"]))
-    assert data == bytes([0x43, 0x01, 0x01, 0x71])
+    assert data == bytes([0x43, 0x01, 0x71])
+
+
+def test_build_dtc_response_empty_list_is_bare_sid():
+    _, _, data = parse_frame(build_dtc_response(sid_positive=0x47, dtcs=[]))
+    assert data == bytes([0x47])
 
 
 def test_encode_dtc_rejects_first_digit_above_3():

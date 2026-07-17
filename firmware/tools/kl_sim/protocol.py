@@ -91,7 +91,11 @@ def encode_dtc(code: str) -> bytes:
 
 
 def build_dtc_response(sid_positive: int, dtcs: list[str]) -> bytes:
-    payload = bytes([sid_positive, len(dtcs)])
+    # Standard J1979-over-K-line layout: no count byte -- the DTC count is
+    # implicit in the frame's own length field. The firmware's read_dtcs
+    # accepts both this and the legacy explicit-count layout, so the sim
+    # emits what the real ECU [Likely] sends.
+    payload = bytes([sid_positive])
     for code in dtcs:
         payload += encode_dtc(code)
     return build_frame(TESTER_ADDRESS, TARGET_ADDRESS, payload)

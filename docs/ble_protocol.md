@@ -163,6 +163,10 @@ protocol-mismatch state.
 
 Frame layouts, UUIDs, encodings above: design-fixed here, [Confirmed] as
 the contract by the golden tests. The DTC **count-byte framing on the
-K-line side** (how the ECU reports DTCs to firmware) is [Guessing] — see
-spec §2.3; that uncertainty is isolated in `kline_kwp` and does NOT affect
-this BLE frame, which is our own format end-to-end.
+K-line side** (how the ECU reports DTCs to firmware) is handled
+defensively: `kline_kwp` accepts both possible layouts, discriminated by
+the response frame's data-length parity ([Best estimate]/[Likely] — see
+the `read_stored_dtcs`/`read_pending_dtcs` contract comment in
+`firmware/src/kline_kwp.h`, and spec §2.3). That uncertainty is isolated
+in `kline_kwp` and does NOT affect this BLE frame, which is our own
+format end-to-end.
