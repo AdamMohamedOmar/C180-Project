@@ -25,7 +25,9 @@ class FakeTelemetrySource(
 
     override val dtcReport: StateFlow<DtcReport?> = MutableStateFlow(
         when (scenario) {
-            FakeScenario.FAULT -> DtcReport(stored = listOf("P0171"), pending = emptyList())
+            // P1570 is deliberately in NEITHER json: it proves the
+            // family-decode layer on a real screen (spec §8.4/§10).
+            FakeScenario.FAULT -> DtcReport(stored = listOf("P0171"), pending = listOf("P1570"))
             else -> DtcReport(stored = emptyList(), pending = emptyList())
         }
     )

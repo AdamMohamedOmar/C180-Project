@@ -20,8 +20,13 @@
     "hint": "Warm idle should settle 87–95 °C (thermostat opens at 87 °C)"
   },
   {
-    "signal": "BATT_V_ADC", "context": "always", "lo": 13.8, "hi": 14.5,
+    "signal": "BATT_V_ADC", "context": "engine_running", "lo": 13.8, "hi": 14.5,
     "unit": "V", "confidence": "Confirmed",
     "hint": "Engine-running voltage outside 13.8–14.5 V: charging-system check"
+  },
+  {
+    "signal": "BATT_V_ADC", "context": "engine_off", "lo": 12.5, "hi": 13.2,
+    "unit": "V", "confidence": "Best estimate",
+    "hint": "Resting below 12.5 V suggests a weak or draining battery"
   }
 ]

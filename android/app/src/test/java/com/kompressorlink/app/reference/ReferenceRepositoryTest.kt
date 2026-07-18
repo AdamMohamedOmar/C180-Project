@@ -2,8 +2,6 @@ package com.kompressorlink.app.reference
 
 import com.kompressorlink.app.telemetry.Signal
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -38,26 +36,6 @@ class ReferenceRepositoryTest {
         // docs/w203_reference.md rows that map onto dashboard signals.
         val banded = repo().bands.map { it.signal }.toSet()
         assertEquals(setOf("MAF_GS", "STFT1", "LTFT1", "ECT", "BATT_V_ADC"), banded)
-    }
-
-    @Test
-    fun `p0171 interpretation leads with breather hoses`() {
-        val entry = repo().dtcFor("P0171")
-        assertNotNull(entry)
-        assertTrue(entry!!.likely_causes.first().contains("breather", ignoreCase = true))
-    }
-
-    @Test
-    fun `note field is populated for the P0300 family and null elsewhere`() {
-        val r = repo()
-        assertNotNull(r.dtcFor("P0300")!!.note)
-        assertTrue(r.dtcFor("P0300")!!.note!!.contains("FR6MPP332"))
-        assertNull(r.dtcFor("P0170")!!.note)
-    }
-
-    @Test
-    fun `unknown code has no entry`() {
-        assertNull(repo().dtcFor("P9999"))
     }
 
     @Test

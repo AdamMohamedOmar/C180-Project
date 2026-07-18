@@ -26,7 +26,7 @@ class FakeTelemetrySourceTest {
         val s = FakeTelemetrySource.snapshotAt(FakeScenario.FAULT, tMs = 0L, seq = 0)
         assertEquals(18f, s.value(Signal.LTFT1))
         val source = FakeTelemetrySource(FakeScenario.FAULT)
-        assertEquals(DtcReport(listOf("P0171"), emptyList()), source.dtcReport.value)
+        assertEquals(DtcReport(listOf("P0171"), listOf("P1570")), source.dtcReport.value)
     }
 
     @Test

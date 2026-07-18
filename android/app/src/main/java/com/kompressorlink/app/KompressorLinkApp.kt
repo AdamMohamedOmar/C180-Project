@@ -8,6 +8,16 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.kompressorlink.app.data.RoomMaintenanceRepository
+import com.kompressorlink.app.data.RoomOdometerRepository
+import com.kompressorlink.app.data.RoomSessionRepository
+import com.kompressorlink.app.data.RoomWarningRepository
+import com.kompressorlink.app.data.db.KlDatabase
+import com.kompressorlink.app.dtc.DtcRepository
+import com.kompressorlink.app.health.LiveWarningMonitor
+import com.kompressorlink.app.health.PostSessionEvaluator
+import com.kompressorlink.app.health.SessionRecorder
+import com.kompressorlink.app.maintenance.MaintenanceCheckWorker
 import com.kompressorlink.app.reference.ReferenceRepository
 import com.kompressorlink.app.telemetry.FakeScenario
 import com.kompressorlink.app.telemetry.FakeTelemetrySource
@@ -36,6 +46,8 @@ class KompressorLinkApp : Application() {
     override fun onCreate() {
         super.onCreate()
         container = AppContainer(this)
+        MaintenanceCheckWorker.ensureChannel(this)
+        MaintenanceCheckWorker.schedule(this)
     }
 }
 
@@ -74,7 +86,8 @@ class DataStoreAssociationStore(
     }
 }
 
-// Manual DI for a 3-screen personal tool — no Hilt (spec §4).
+// Manual DI for a personal tool — no Hilt (Phase 4 spec §4; Phase 4.5 keeps
+// the pattern and adds the data layer + recorder).
 class AppContainer(app: Application) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -82,6 +95,10 @@ class AppContainer(app: Application) {
     val associationStore: AssociationStore = DataStoreAssociationStore(app.klDataStore)
 
     val referenceRepository = ReferenceRepository { name ->
+        app.assets.open(name).bufferedReader().readText()
+    }
+
+    val dtcRepository = DtcRepository { name ->
         app.assets.open(name).bufferedReader().readText()
     }
 
@@ -116,6 +133,42 @@ class AppContainer(app: Application) {
         initialChoice = runBlocking { choiceStore.choice.first() },
     ) { choice ->
         fakes[choice] ?: bleSession
+    }
+
+    // ── Phase 4.5 data layer ────────────────────────────────────────────
+    private val db = KlDatabase.build(app)
+    val sessionRepository = RoomSessionRepository(db)
+    val warningRepository = RoomWarningRepository(db)
+    val odometerRepository = RoomOdometerRepository(db)
+    val maintenanceRepository = RoomMaintenanceRepository(db)
+
+    val postSessionEvaluator = PostSessionEvaluator(
+        sessions = sessionRepository,
+        warnings = warningRepository,
+        refs = referenceRepository,
+    )
+
+    val sessionRecorder = SessionRecorder(
+        scope = scope,
+        source = telemetrySource,
+        choice = choiceStore.choice,
+        sessions = sessionRepository,
+        refs = referenceRepository,
+        onSessionClosed = postSessionEvaluator::onSessionClosed,
+    )
+
+    val liveWarningMonitor = LiveWarningMonitor(
+        scope = scope,
+        source = telemetrySource,
+        choice = choiceStore.choice,
+        refs = referenceRepository,
+        warnings = warningRepository,
+    )
+
+    init {
+        scope.launch { maintenanceRepository.ensureSeeded() }
+        sessionRecorder.start()
+        liveWarningMonitor.start()
     }
 
     // Launched on this container's process-scoped `scope` rather than any

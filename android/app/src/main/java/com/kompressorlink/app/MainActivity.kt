@@ -1,6 +1,7 @@
 package com.kompressorlink.app
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -8,12 +9,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -30,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -39,12 +47,31 @@ import com.kompressorlink.app.dashboard.DashboardScreen
 import com.kompressorlink.app.dashboard.DashboardViewModel
 import com.kompressorlink.app.dtc.DtcScreen
 import com.kompressorlink.app.dtc.DtcViewModel
+import com.kompressorlink.app.health.HealthScreen
+import com.kompressorlink.app.health.HealthViewModel
+import com.kompressorlink.app.maintenance.MaintenanceCheckWorker
+import com.kompressorlink.app.maintenance.MaintenanceScreen
+import com.kompressorlink.app.maintenance.MaintenanceViewModel
 import com.kompressorlink.app.telemetry.SourceChoice
+import com.kompressorlink.app.ui.components.ConnectionBanner
+import com.kompressorlink.app.ui.theme.KompressorLinkTheme
 import kotlinx.coroutines.launch
+
+/** A single "navigate to a notification-driven tab" request. Carries a
+ *  monotonically increasing [nonce] alongside the target [tab] so that a
+ *  *second* reminder tap for the same tab — currently the only real-world
+ *  case, since [MaintenanceCheckWorker] only ever targets
+ *  [MaintenanceCheckWorker.TAB_MAINTENANCE] — is still a distinct event.
+ *  `LaunchedEffect` restarts only when its key is unequal to the previous
+ *  one; two events with an identical `tab` string but different nonces
+ *  compare unequal, so the navigation reliably re-fires on every tap. */
+private data class StartTabEvent(val tab: String?, val nonce: Int)
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var associator: CdmAssociator
+    private var startTabNonce = 0
+    private val startTabState = mutableStateOf(StartTabEvent(tab = null, nonce = 0))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +79,15 @@ class MainActivity : ComponentActivity() {
         associator = CdmAssociator(this) { mac ->
             container.persistAssociation(mac)
         }
+        // A maintenance-reminder tap lands on the Maintenance tab (spec §6.4).
+        startTabState.value = StartTabEvent(
+            intent.getStringExtra(MaintenanceCheckWorker.EXTRA_START_TAB), startTabNonce++,
+        )
         setContent {
-            MaterialTheme {
+            KompressorLinkTheme {
                 AppUi(
                     container = container,
+                    startTab = startTabState.value,
                     onPairRequest = {
                         if (Build.VERSION.SDK_INT >= 33) {
                             associator.associate()
@@ -68,19 +100,53 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    // MainActivity keeps the manifest-default "standard" launchMode, but
+    // MaintenanceCheckWorker's PendingIntent sets FLAG_ACTIVITY_SINGLE_TOP, so
+    // a second reminder tap while this Activity's task already exists (app
+    // backgrounded, not swiped away) redelivers the intent here rather than
+    // recreating the Activity. Without this override the redelivered intent's
+    // extra would be silently dropped: onCreate()'s `intent` read only ever
+    // happens once. Routing the new extra into startTabState — read from
+    // inside the setContent{} composable scope, which recomposes on a State
+    // change — makes the composition react to it like a fresh launch would.
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        startTabState.value = StartTabEvent(
+            intent.getStringExtra(MaintenanceCheckWorker.EXTRA_START_TAB), startTabNonce++,
+        )
+    }
+}
+
+private data class Tab(val route: String, val label: String)
+
+private val TABS = listOf(
+    Tab("dashboard", "Dashboard"),
+    Tab("health", "Health"),
+    Tab("dtc", "DTCs"),
+    Tab("maintenance", "Maintenance"),
+)
+
+@Composable
+private fun tabIcon(route: String) = when (route) {
+    "dashboard" -> Icons.Filled.Home
+    "health" -> Icons.Filled.Favorite
+    "dtc" -> Icons.Filled.Warning
+    else -> Icons.Filled.Build
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AppUi(container: AppContainer, onPairRequest: () -> Unit) {
+private fun AppUi(container: AppContainer, startTab: StartTabEvent, onPairRequest: () -> Unit) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val choice by container.choiceStore.choice
         .collectAsState(initial = SourceChoice.SIMULATED_HEALTHY)
+    val connection by container.telemetrySource.connectionState.collectAsState()
     var menuOpen by remember { mutableStateOf(false) }
 
-    // Runtime permissions, requested once at startup. BLUETOOTH_CONNECT is
-    // an API 31+ runtime permission; POST_NOTIFICATIONS is API 33+.
+    // Runtime permissions, requested once at startup (unchanged from Phase 4).
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { /* denial surfaces visibly: BLE connect / notifications just fail */ }
@@ -90,6 +156,19 @@ private fun AppUi(container: AppContainer, onPairRequest: () -> Unit) {
             if (Build.VERSION.SDK_INT >= 33) add(Manifest.permission.POST_NOTIFICATIONS)
         }
         if (wanted.isNotEmpty()) permissionLauncher.launch(wanted.toTypedArray())
+    }
+
+    LaunchedEffect(startTab) {
+        val tab = startTab.tab
+        if (tab != null && TABS.any { it.route == tab }) {
+            navController.navigate(tab) {
+                // Same reuse-friendly pattern as the bottom-nav clicks below:
+                // avoids stacking a duplicate "maintenance" entry per tap.
+                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
     }
 
     Scaffold(
@@ -104,6 +183,19 @@ private fun AppUi(container: AppContainer, onPairRequest: () -> Unit) {
                         DropdownMenuItem(
                             text = { Text("Pair with device…") },
                             onClick = { menuOpen = false; onPairRequest() },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Run reminder check now") },
+                            onClick = {
+                                menuOpen = false
+                                // Debug/acceptance hook (spec §6.4): proves the
+                                // notification path without waiting 24 h.
+                                scope.launch {
+                                    MaintenanceCheckWorker.runCheck(
+                                        container, navController.context.applicationContext,
+                                    )
+                                }
+                            },
                         )
                         HorizontalDivider()
                         SourceChoice.entries.forEach { c ->
@@ -123,35 +215,73 @@ private fun AppUi(container: AppContainer, onPairRequest: () -> Unit) {
             val backStack by navController.currentBackStackEntryAsState()
             val route = backStack?.destination?.route
             NavigationBar {
-                NavigationBarItem(
-                    selected = route == "dashboard",
-                    onClick = { navController.navigate("dashboard") { launchSingleTop = true } },
-                    icon = {}, label = { Text("Dashboard") },
-                )
-                NavigationBarItem(
-                    selected = route == "dtc",
-                    onClick = { navController.navigate("dtc") { launchSingleTop = true } },
-                    icon = {}, label = { Text("DTCs") },
-                )
+                TABS.forEach { tab ->
+                    NavigationBarItem(
+                        selected = route == tab.route,
+                        onClick = {
+                            navController.navigate(tab.route) {
+                                // Standard bottom-nav pattern: pop back to the
+                                // graph's start destination (saving state) so
+                                // cycling tabs doesn't grow the back stack or
+                                // leak a fresh ViewModel per revisit, and
+                                // restore each tab's saved state on the way
+                                // back in instead of recreating it. This also
+                                // makes system Back behave like normal
+                                // bottom-nav Back (return to start tab / exit)
+                                // rather than replaying the whole tab-switch
+                                // history.
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        icon = { Icon(tabIcon(tab.route), contentDescription = tab.label) },
+                        label = { Text(tab.label) },
+                    )
+                }
             }
         },
     ) { padding ->
-        NavHost(
-            navController = navController,
-            startDestination = "dashboard",
-            modifier = Modifier.padding(padding),
-        ) {
-            composable("dashboard") {
-                val vm: DashboardViewModel = viewModel(initializer = {
-                    DashboardViewModel(container.telemetrySource, container.referenceRepository)
-                })
-                DashboardScreen(vm)
-            }
-            composable("dtc") {
-                val vm: DtcViewModel = viewModel(initializer = {
-                    DtcViewModel(container.telemetrySource, container.referenceRepository)
-                })
-                DtcScreen(vm)
+        Column(Modifier.padding(padding)) {
+            ConnectionBanner(connection)
+            NavHost(
+                navController = navController,
+                startDestination = "dashboard",
+            ) {
+                composable("dashboard") {
+                    val vm: DashboardViewModel = viewModel(initializer = {
+                        DashboardViewModel(container.telemetrySource, container.referenceRepository,
+                                           container.liveWarningMonitor.levels)
+                    })
+                    DashboardScreen(vm)
+                }
+                composable("health") {
+                    val vm: HealthViewModel = viewModel(initializer = {
+                        HealthViewModel(
+                            container.sessionRepository, container.warningRepository,
+                            container.liveWarningMonitor.levels, container.telemetrySource,
+                            container.referenceRepository,
+                        )
+                    })
+                    HealthScreen(vm)
+                }
+                composable("dtc") {
+                    val vm: DtcViewModel = viewModel(initializer = {
+                        DtcViewModel(container.telemetrySource, container.dtcRepository)
+                    })
+                    DtcScreen(vm)
+                }
+                composable("maintenance") {
+                    val vm: MaintenanceViewModel = viewModel(initializer = {
+                        MaintenanceViewModel(
+                            container.maintenanceRepository, container.odometerRepository,
+                            container.sessionRepository,
+                        )
+                    })
+                    MaintenanceScreen(vm)
+                }
             }
         }
     }

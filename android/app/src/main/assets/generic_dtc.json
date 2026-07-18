@@ -1,0 +1,2714 @@
+[
+  {
+    "code": "P0030",
+    "title": "HO2S heater control circuit (bank 1, sensor 1)",
+    "meaning": "The front oxygen sensor's heater control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0031",
+    "title": "O2 sensor heater control low (bank 1, sensor 1)",
+    "meaning": "The front oxygen sensor's heater circuit is drawing less current than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0032",
+    "title": "HO2S heater control circuit high (bank 1, sensor 1)",
+    "meaning": "The front oxygen sensor's heater circuit is drawing more current than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0033",
+    "title": "Turbocharger/supercharger bypass valve control circuit",
+    "meaning": "The boost bypass valve's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0034",
+    "title": "Turbocharger/supercharger bypass valve control circuit low",
+    "meaning": "The boost bypass valve's control circuit reads lower than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0035",
+    "title": "Turbocharger/supercharger bypass valve control circuit high",
+    "meaning": "The boost bypass valve's control circuit reads higher than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0036",
+    "title": "HO2S heater control circuit (bank 1, sensor 2)",
+    "meaning": "The rear oxygen sensor's heater control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0037",
+    "title": "HO2S heater control circuit low (bank 1, sensor 2)",
+    "meaning": "The rear oxygen sensor's heater circuit reads lower than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0038",
+    "title": "HO2S heater control circuit high (bank 1, sensor 2)",
+    "meaning": "The rear oxygen sensor's heater circuit reads higher than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0040",
+    "title": "O2 sensor signals swapped (bank 1/bank 2, sensor 1)",
+    "meaning": "The computer thinks the two banks' front oxygen sensor wiring has been crossed.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0041",
+    "title": "O2 sensor signals swapped (bank 1/bank 2, sensor 2)",
+    "meaning": "The computer thinks the two banks' rear oxygen sensor wiring has been crossed.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0042",
+    "title": "HO2S heater control circuit (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor's heater control circuit is faulty (not fitted on all engines).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0043",
+    "title": "HO2S heater control circuit low (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor's heater circuit reads lower than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0044",
+    "title": "HO2S heater control circuit high (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor's heater circuit reads higher than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0045",
+    "title": "Turbocharger/supercharger boost control solenoid circuit",
+    "meaning": "The boost control solenoid's circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0046",
+    "title": "Turbocharger/supercharger boost control solenoid range/performance",
+    "meaning": "The boost control solenoid isn't behaving the way the computer expects.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0047",
+    "title": "Turbocharger/supercharger boost control solenoid circuit low",
+    "meaning": "The boost control solenoid's circuit reads lower than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0048",
+    "title": "Turbocharger/supercharger boost control solenoid circuit high",
+    "meaning": "The boost control solenoid's circuit reads higher than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0050",
+    "title": "HO2S heater control circuit (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor heater control circuit is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0051",
+    "title": "HO2S heater control circuit low (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor heater circuit reads low (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0052",
+    "title": "HO2S heater control circuit high (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor heater circuit reads high (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0053",
+    "title": "HO2S heater resistance (bank 1, sensor 1)",
+    "meaning": "The front oxygen sensor's heater resistance is out of the expected range.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0054",
+    "title": "HO2S heater resistance (bank 1, sensor 2)",
+    "meaning": "The rear oxygen sensor's heater resistance is out of the expected range.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0055",
+    "title": "HO2S heater resistance (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor's heater resistance is out of range (not fitted on all engines).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0056",
+    "title": "HO2S heater control circuit (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor heater control circuit is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0057",
+    "title": "HO2S heater control circuit low (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor heater circuit reads low (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0058",
+    "title": "HO2S heater control circuit high (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor heater circuit reads high (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0059",
+    "title": "HO2S heater resistance (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor heater resistance is out of range (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0087",
+    "title": "Fuel rail/system pressure too low",
+    "meaning": "Fuel rail pressure is lower than the computer needs to fuel the engine properly.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0088",
+    "title": "Fuel rail/system pressure too high",
+    "meaning": "Fuel rail pressure is higher than it should be.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0089",
+    "title": "Fuel pressure regulator performance",
+    "meaning": "The fuel pressure regulator isn't holding pressure the way it should.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0090",
+    "title": "Fuel pressure regulator control circuit",
+    "meaning": "The fuel pressure regulator's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0091",
+    "title": "Fuel pressure regulator control circuit low",
+    "meaning": "The fuel pressure regulator's control circuit reads lower than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0092",
+    "title": "Fuel pressure regulator control circuit high",
+    "meaning": "The fuel pressure regulator's control circuit reads higher than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0093",
+    "title": "Fuel system large leak detected",
+    "meaning": "The fuel system is losing pressure fast, consistent with a significant leak.",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0094",
+    "title": "Fuel system small leak detected",
+    "meaning": "The fuel system is losing a small amount of pressure, consistent with a minor leak.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0095",
+    "title": "Intake air temperature sensor 2 circuit",
+    "meaning": "A second intake air temperature sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0096",
+    "title": "Intake air temperature sensor 2 range/performance",
+    "meaning": "The second IAT sensor's reading doesn't behave the way real air does.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0097",
+    "title": "Intake air temperature sensor 2 circuit low",
+    "meaning": "The second IAT sensor's signal is stuck at the cold end of its range.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0098",
+    "title": "Intake air temperature sensor 2 circuit high",
+    "meaning": "The second IAT sensor's signal is stuck at the hot end of its range.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0099",
+    "title": "Intake air temperature sensor 2 circuit intermittent",
+    "meaning": "The second IAT sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0105",
+    "title": "MAP sensor circuit",
+    "meaning": "The manifold pressure sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0106",
+    "title": "MAP/BARO sensor range/performance",
+    "meaning": "The manifold pressure sensor's reading doesn't match real engine conditions.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0107",
+    "title": "MAP sensor circuit low",
+    "meaning": "The manifold pressure sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0108",
+    "title": "MAP sensor circuit high",
+    "meaning": "The manifold pressure sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0109",
+    "title": "MAP sensor circuit intermittent",
+    "meaning": "The manifold pressure sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0119",
+    "title": "Engine coolant temperature circuit intermittent",
+    "meaning": "The coolant temperature signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0124",
+    "title": "Throttle position circuit intermittent",
+    "meaning": "The throttle position signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0129",
+    "title": "Barometric pressure too low",
+    "meaning": "The barometric pressure reading is implausibly low for the sensor to trust.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0142",
+    "title": "O2 sensor circuit (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor's signal is faulty (not fitted on all engines).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0143",
+    "title": "O2 sensor circuit low voltage (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor reads persistently low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0144",
+    "title": "O2 sensor circuit high voltage (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor reads persistently high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0145",
+    "title": "O2 sensor circuit slow response (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor switches too slowly.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0146",
+    "title": "O2 sensor circuit no activity (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor's signal isn't moving at all.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0147",
+    "title": "O2 sensor heater circuit (bank 1, sensor 3)",
+    "meaning": "A third-position oxygen sensor's heater circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0148",
+    "title": "Fuel delivery error",
+    "meaning": "Fuel delivery doesn't match what the engine is asking for.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0149",
+    "title": "Fuel timing",
+    "meaning": "The fuel injection timing doesn't match what the computer commanded.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0150",
+    "title": "O2 sensor circuit (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor signal is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0151",
+    "title": "O2 sensor circuit low voltage (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor reads persistently low (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0152",
+    "title": "O2 sensor circuit high voltage (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor reads persistently high (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0153",
+    "title": "O2 sensor circuit slow response (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor switches too slowly (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0154",
+    "title": "O2 sensor circuit no activity (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor signal isn't moving (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0155",
+    "title": "O2 sensor heater circuit (bank 2, sensor 1)",
+    "meaning": "Bank 2's front oxygen sensor heater circuit is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0156",
+    "title": "O2 sensor circuit (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor signal is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0157",
+    "title": "O2 sensor circuit low voltage (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor reads persistently low (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0158",
+    "title": "O2 sensor circuit high voltage (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor reads persistently high (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0159",
+    "title": "O2 sensor circuit slow response (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor switches too slowly (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0160",
+    "title": "O2 sensor circuit no activity (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor signal isn't moving (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0161",
+    "title": "O2 sensor heater circuit (bank 2, sensor 2)",
+    "meaning": "Bank 2's rear oxygen sensor heater circuit is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0162",
+    "title": "O2 sensor circuit (bank 2, sensor 3)",
+    "meaning": "A bank 2 third-position oxygen sensor signal is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0163",
+    "title": "O2 sensor circuit low voltage (bank 2, sensor 3)",
+    "meaning": "A bank 2 third-position oxygen sensor reads persistently low (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0164",
+    "title": "O2 sensor circuit high voltage (bank 2, sensor 3)",
+    "meaning": "A bank 2 third-position oxygen sensor reads persistently high (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0165",
+    "title": "O2 sensor circuit slow response (bank 2, sensor 3)",
+    "meaning": "A bank 2 third-position oxygen sensor switches too slowly (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0166",
+    "title": "O2 sensor circuit no activity (bank 2, sensor 3)",
+    "meaning": "A bank 2 third-position oxygen sensor signal isn't moving (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0167",
+    "title": "O2 sensor heater circuit (bank 2, sensor 3)",
+    "meaning": "A bank 2 third-position oxygen sensor heater circuit is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0173",
+    "title": "Fuel trim malfunction (bank 2)",
+    "meaning": "The computer is having to add or remove more fuel than it should on bank 2 (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0174",
+    "title": "System too lean (bank 2)",
+    "meaning": "Bank 2 is getting more air than the fuel math expects (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0175",
+    "title": "System too rich (bank 2)",
+    "meaning": "Bank 2 is getting more fuel than the air justifies (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0176",
+    "title": "Fuel composition sensor circuit",
+    "meaning": "The flex-fuel composition sensor's signal is faulty (not fitted on this engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0177",
+    "title": "Fuel composition sensor range/performance",
+    "meaning": "The flex-fuel composition sensor's reading is implausible (not fitted on this engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0178",
+    "title": "Fuel composition sensor circuit low",
+    "meaning": "The flex-fuel composition sensor's signal is stuck low (not fitted on this engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0179",
+    "title": "Fuel composition sensor circuit high",
+    "meaning": "The flex-fuel composition sensor's signal is stuck high (not fitted on this engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0180",
+    "title": "Fuel temperature sensor A circuit",
+    "meaning": "A fuel temperature sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0181",
+    "title": "Fuel temperature sensor A range/performance",
+    "meaning": "The fuel temperature sensor's reading doesn't behave like real fuel.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0182",
+    "title": "Fuel temperature sensor A circuit low",
+    "meaning": "The fuel temperature sensor's signal is stuck at the cold end.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0183",
+    "title": "Fuel temperature sensor A circuit high",
+    "meaning": "The fuel temperature sensor's signal is stuck at the hot end.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0184",
+    "title": "Fuel temperature sensor A circuit intermittent",
+    "meaning": "The fuel temperature sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0185",
+    "title": "Fuel temperature sensor B circuit",
+    "meaning": "A second fuel temperature sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0186",
+    "title": "Fuel temperature sensor B range/performance",
+    "meaning": "The second fuel temperature sensor's reading doesn't behave like real fuel.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0187",
+    "title": "Fuel temperature sensor B circuit low",
+    "meaning": "The second fuel temperature sensor's signal is stuck at the cold end.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0188",
+    "title": "Fuel temperature sensor B circuit high",
+    "meaning": "The second fuel temperature sensor's signal is stuck at the hot end.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0189",
+    "title": "Fuel temperature sensor B circuit intermittent",
+    "meaning": "The second fuel temperature sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0190",
+    "title": "Fuel rail pressure sensor circuit",
+    "meaning": "The fuel rail pressure sensor's signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0191",
+    "title": "Fuel rail pressure sensor range/performance",
+    "meaning": "The fuel rail pressure reading doesn't match what the engine should see.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0192",
+    "title": "Fuel rail pressure sensor circuit low",
+    "meaning": "The fuel rail pressure sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0193",
+    "title": "Fuel rail pressure sensor circuit high",
+    "meaning": "The fuel rail pressure sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0194",
+    "title": "Fuel rail pressure sensor circuit intermittent",
+    "meaning": "The fuel rail pressure sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0195",
+    "title": "Engine oil temperature sensor circuit",
+    "meaning": "The oil temperature sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0196",
+    "title": "Engine oil temperature sensor range/performance",
+    "meaning": "The oil temperature reading doesn't behave like a warming engine.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0197",
+    "title": "Engine oil temperature sensor low",
+    "meaning": "The oil temperature sensor's signal is stuck at the cold end.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0198",
+    "title": "Engine oil temperature sensor high",
+    "meaning": "The oil temperature sensor's signal is stuck at the hot end.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0199",
+    "title": "Engine oil temperature sensor intermittent",
+    "meaning": "The oil temperature sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0205",
+    "title": "Injector circuit — cylinder 5",
+    "meaning": "Cylinder 5's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0206",
+    "title": "Injector circuit — cylinder 6",
+    "meaning": "Cylinder 6's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0207",
+    "title": "Injector circuit — cylinder 7",
+    "meaning": "Cylinder 7's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0208",
+    "title": "Injector circuit — cylinder 8",
+    "meaning": "Cylinder 8's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0209",
+    "title": "Injector circuit — cylinder 9",
+    "meaning": "Cylinder 9's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0210",
+    "title": "Injector circuit — cylinder 10",
+    "meaning": "Cylinder 10's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0211",
+    "title": "Injector circuit — cylinder 11",
+    "meaning": "Cylinder 11's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0212",
+    "title": "Injector circuit — cylinder 12",
+    "meaning": "Cylinder 12's injector circuit is faulty (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0215",
+    "title": "Engine shutoff solenoid circuit",
+    "meaning": "The fuel shutoff solenoid's circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0216",
+    "title": "Injection timing control circuit",
+    "meaning": "The fuel injection timing control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0217",
+    "title": "Engine overtemperature condition",
+    "meaning": "The engine has run hotter than the safe limit.",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0218",
+    "title": "Transmission fluid over temperature",
+    "meaning": "The transmission fluid has run hotter than the safe limit (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0219",
+    "title": "Engine overspeed condition",
+    "meaning": "The engine has spun faster than the safe limit.",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0220",
+    "title": "Throttle/pedal position sensor B circuit",
+    "meaning": "A second throttle/pedal position sensor's signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0221",
+    "title": "Throttle/pedal position sensor B range/performance",
+    "meaning": "The second throttle/pedal position sensor's reading is implausible.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0222",
+    "title": "Throttle/pedal position sensor B circuit low",
+    "meaning": "The second throttle/pedal position sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0223",
+    "title": "Throttle/pedal position sensor B circuit high",
+    "meaning": "The second throttle/pedal position sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0224",
+    "title": "Throttle/pedal position sensor B circuit intermittent",
+    "meaning": "The second throttle/pedal position sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0225",
+    "title": "Throttle/pedal position sensor C circuit",
+    "meaning": "A third throttle/pedal position sensor's signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0226",
+    "title": "Throttle/pedal position sensor C range/performance",
+    "meaning": "The third throttle/pedal position sensor's reading is implausible.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0227",
+    "title": "Throttle/pedal position sensor C circuit low",
+    "meaning": "The third throttle/pedal position sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0228",
+    "title": "Throttle/pedal position sensor C circuit high",
+    "meaning": "The third throttle/pedal position sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0229",
+    "title": "Throttle/pedal position sensor C circuit intermittent",
+    "meaning": "The third throttle/pedal position sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0230",
+    "title": "Fuel pump primary circuit",
+    "meaning": "The fuel pump's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0231",
+    "title": "Fuel pump secondary circuit low",
+    "meaning": "The fuel pump's secondary circuit reads lower than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0232",
+    "title": "Fuel pump secondary circuit high",
+    "meaning": "The fuel pump's secondary circuit reads higher than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0233",
+    "title": "Fuel pump secondary circuit intermittent",
+    "meaning": "The fuel pump's secondary circuit cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0234",
+    "title": "Turbocharger/supercharger overboost condition",
+    "meaning": "Boost pressure went higher than the safe limit.",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0261",
+    "title": "Injector circuit low — cylinder 1",
+    "meaning": "Cylinder 1's injector wiring shows lower voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0262",
+    "title": "Injector circuit high — cylinder 1",
+    "meaning": "Cylinder 1's injector wiring shows higher voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0263",
+    "title": "Injector circuit — cylinder 2 (contribution/range)",
+    "meaning": "Cylinder 2 isn't contributing fuel the way the others are.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0264",
+    "title": "Injector circuit low — cylinder 2",
+    "meaning": "Cylinder 2's injector wiring shows lower voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0265",
+    "title": "Injector circuit high — cylinder 2",
+    "meaning": "Cylinder 2's injector wiring shows higher voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0266",
+    "title": "Injector circuit — cylinder 3 (contribution/range)",
+    "meaning": "Cylinder 3 isn't contributing fuel the way the others are.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0267",
+    "title": "Injector circuit low — cylinder 3",
+    "meaning": "Cylinder 3's injector wiring shows lower voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0268",
+    "title": "Injector circuit high — cylinder 3",
+    "meaning": "Cylinder 3's injector wiring shows higher voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0269",
+    "title": "Injector circuit — cylinder 4 (contribution/range)",
+    "meaning": "Cylinder 4 isn't contributing fuel the way the others are.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0270",
+    "title": "Injector circuit low — cylinder 4",
+    "meaning": "Cylinder 4's injector wiring shows lower voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0271",
+    "title": "Injector circuit high — cylinder 4",
+    "meaning": "Cylinder 4's injector wiring shows higher voltage than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0272",
+    "title": "Injector circuit — cylinder 5 (contribution/range)",
+    "meaning": "Cylinder 5 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0273",
+    "title": "Injector circuit low — cylinder 5",
+    "meaning": "Cylinder 5's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0274",
+    "title": "Injector circuit high — cylinder 5",
+    "meaning": "Cylinder 5's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0275",
+    "title": "Injector circuit — cylinder 6 (contribution/range)",
+    "meaning": "Cylinder 6 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0276",
+    "title": "Injector circuit low — cylinder 6",
+    "meaning": "Cylinder 6's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0277",
+    "title": "Injector circuit high — cylinder 6",
+    "meaning": "Cylinder 6's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0278",
+    "title": "Injector circuit — cylinder 7 (contribution/range)",
+    "meaning": "Cylinder 7 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0279",
+    "title": "Injector circuit low — cylinder 7",
+    "meaning": "Cylinder 7's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0280",
+    "title": "Injector circuit high — cylinder 7",
+    "meaning": "Cylinder 7's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0281",
+    "title": "Injector circuit — cylinder 8 (contribution/range)",
+    "meaning": "Cylinder 8 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0282",
+    "title": "Injector circuit low — cylinder 8",
+    "meaning": "Cylinder 8's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0283",
+    "title": "Injector circuit high — cylinder 8",
+    "meaning": "Cylinder 8's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0284",
+    "title": "Injector circuit — cylinder 9 (contribution/range)",
+    "meaning": "Cylinder 9 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0285",
+    "title": "Injector circuit low — cylinder 9",
+    "meaning": "Cylinder 9's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0286",
+    "title": "Injector circuit high — cylinder 9",
+    "meaning": "Cylinder 9's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0287",
+    "title": "Injector circuit — cylinder 10 (contribution/range)",
+    "meaning": "Cylinder 10 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0288",
+    "title": "Injector circuit low — cylinder 10",
+    "meaning": "Cylinder 10's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0289",
+    "title": "Injector circuit high — cylinder 10",
+    "meaning": "Cylinder 10's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0290",
+    "title": "Injector circuit — cylinder 11 (contribution/range)",
+    "meaning": "Cylinder 11 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0291",
+    "title": "Injector circuit low — cylinder 11",
+    "meaning": "Cylinder 11's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0292",
+    "title": "Injector circuit high — cylinder 11",
+    "meaning": "Cylinder 11's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0293",
+    "title": "Injector circuit — cylinder 12 (contribution/range)",
+    "meaning": "Cylinder 12 isn't contributing fuel the way the others are (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0294",
+    "title": "Injector circuit low — cylinder 12",
+    "meaning": "Cylinder 12's injector wiring shows lower voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0295",
+    "title": "Injector circuit high — cylinder 12",
+    "meaning": "Cylinder 12's injector wiring shows higher voltage than expected (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0305",
+    "title": "Misfire — cylinder 5",
+    "meaning": "Cylinder 5 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0306",
+    "title": "Misfire — cylinder 6",
+    "meaning": "Cylinder 6 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0307",
+    "title": "Misfire — cylinder 7",
+    "meaning": "Cylinder 7 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0308",
+    "title": "Misfire — cylinder 8",
+    "meaning": "Cylinder 8 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0309",
+    "title": "Misfire — cylinder 9",
+    "meaning": "Cylinder 9 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0310",
+    "title": "Misfire — cylinder 10",
+    "meaning": "Cylinder 10 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0311",
+    "title": "Misfire — cylinder 11",
+    "meaning": "Cylinder 11 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0312",
+    "title": "Misfire — cylinder 12",
+    "meaning": "Cylinder 12 intermittently fails to burn its mixture (not applicable on this 4-cylinder engine — likely a readout error).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0326",
+    "title": "Knock sensor 1 range/performance (bank 1)",
+    "meaning": "The knock sensor's reading doesn't behave the way real engine knock would.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0328",
+    "title": "Knock sensor 1 circuit high (bank 1)",
+    "meaning": "The knock sensor's output is louder than believable.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0329",
+    "title": "Knock sensor 1 circuit intermittent (bank 1)",
+    "meaning": "The knock sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0330",
+    "title": "Knock sensor 2 circuit (bank 2)",
+    "meaning": "A second knock sensor's signal is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0331",
+    "title": "Knock sensor 2 range/performance (bank 2)",
+    "meaning": "The second knock sensor's reading is implausible (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0332",
+    "title": "Knock sensor 2 circuit low (bank 2)",
+    "meaning": "The second knock sensor's output is too quiet to be believable (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0333",
+    "title": "Knock sensor 2 circuit high (bank 2)",
+    "meaning": "The second knock sensor's output is louder than believable (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0334",
+    "title": "Knock sensor 2 circuit intermittent (bank 2)",
+    "meaning": "The second knock sensor's signal cuts in and out (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0336",
+    "title": "Crankshaft position sensor A range/performance",
+    "meaning": "The crank sensor's signal doesn't behave the way a spinning crank should.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0337",
+    "title": "Crankshaft position sensor A circuit low",
+    "meaning": "The crank sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0338",
+    "title": "Crankshaft position sensor A circuit high",
+    "meaning": "The crank sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0339",
+    "title": "Crankshaft position sensor A circuit intermittent",
+    "meaning": "The crank sensor's signal cuts in and out — this can cause stalling.",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0342",
+    "title": "Camshaft position sensor circuit low",
+    "meaning": "The cam sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0343",
+    "title": "Camshaft position sensor circuit high",
+    "meaning": "The cam sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0344",
+    "title": "Camshaft position sensor circuit intermittent",
+    "meaning": "The cam sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0345",
+    "title": "Camshaft position sensor circuit (bank 2)",
+    "meaning": "A bank 2 cam sensor's signal is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0346",
+    "title": "Camshaft position sensor range/performance (bank 2)",
+    "meaning": "A bank 2 cam sensor's reading is implausible (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0347",
+    "title": "Camshaft position sensor circuit low (bank 2)",
+    "meaning": "A bank 2 cam sensor's signal is stuck low (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0348",
+    "title": "Camshaft position sensor circuit high (bank 2)",
+    "meaning": "A bank 2 cam sensor's signal is stuck high (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0349",
+    "title": "Camshaft position sensor circuit intermittent (bank 2)",
+    "meaning": "A bank 2 cam sensor's signal cuts in and out (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0355",
+    "title": "Ignition coil E primary/secondary circuit",
+    "meaning": "Cylinder 5's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0356",
+    "title": "Ignition coil F primary/secondary circuit",
+    "meaning": "Cylinder 6's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0357",
+    "title": "Ignition coil G primary/secondary circuit",
+    "meaning": "Cylinder 7's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0358",
+    "title": "Ignition coil H primary/secondary circuit",
+    "meaning": "Cylinder 8's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0359",
+    "title": "Ignition coil I primary/secondary circuit",
+    "meaning": "Cylinder 9's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0360",
+    "title": "Ignition coil J primary/secondary circuit",
+    "meaning": "Cylinder 10's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0361",
+    "title": "Ignition coil K primary/secondary circuit",
+    "meaning": "Cylinder 11's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0362",
+    "title": "Ignition coil L primary/secondary circuit",
+    "meaning": "Cylinder 12's coil primary circuit is faulty (not applicable on this 4-cylinder engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0363",
+    "title": "Misfire detected — fueling disabled",
+    "meaning": "The computer detected a misfire severe enough that it cut fuel to protect the catalyst.",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0370",
+    "title": "Timing reference high-resolution signal A malfunction",
+    "meaning": "A high-resolution engine timing reference signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0371",
+    "title": "Timing reference high-resolution signal A too many pulses",
+    "meaning": "The timing reference signal is producing extra pulses it shouldn't.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0372",
+    "title": "Timing reference high-resolution signal A too few pulses",
+    "meaning": "The timing reference signal is missing pulses it should produce.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0373",
+    "title": "Timing reference high-resolution signal A intermittent/erratic",
+    "meaning": "The timing reference signal is irregular.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0374",
+    "title": "Timing reference high-resolution signal A no pulses",
+    "meaning": "The timing reference signal has stopped entirely.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0375",
+    "title": "Timing reference high-resolution signal B malfunction",
+    "meaning": "A second high-resolution engine timing reference signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0376",
+    "title": "Timing reference high-resolution signal B too many pulses",
+    "meaning": "The second timing reference signal is producing extra pulses it shouldn't.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0377",
+    "title": "Timing reference high-resolution signal B too few pulses",
+    "meaning": "The second timing reference signal is missing pulses it should produce.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0378",
+    "title": "Timing reference high-resolution signal B intermittent/erratic",
+    "meaning": "The second timing reference signal is irregular.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0379",
+    "title": "Timing reference high-resolution signal B no pulses",
+    "meaning": "The second timing reference signal has stopped entirely.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0400",
+    "title": "Exhaust gas recirculation flow malfunction",
+    "meaning": "The EGR system isn't recirculating exhaust gas the way the computer commands.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0401",
+    "title": "EGR flow insufficient",
+    "meaning": "Less exhaust gas is being recirculated than commanded.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0402",
+    "title": "EGR flow excessive",
+    "meaning": "More exhaust gas is being recirculated than commanded.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0403",
+    "title": "EGR control circuit",
+    "meaning": "The EGR valve's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0404",
+    "title": "EGR control circuit range/performance",
+    "meaning": "The EGR valve isn't responding the way its control circuit commands.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0405",
+    "title": "EGR sensor A circuit low",
+    "meaning": "The EGR position sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0406",
+    "title": "EGR sensor A circuit high",
+    "meaning": "The EGR position sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0407",
+    "title": "EGR sensor B circuit low",
+    "meaning": "A second EGR position sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0408",
+    "title": "EGR sensor B circuit high",
+    "meaning": "A second EGR position sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0409",
+    "title": "EGR sensor B circuit",
+    "meaning": "A second EGR position sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0411",
+    "title": "Secondary air injection system incorrect flow",
+    "meaning": "The secondary air system isn't moving the amount of air the computer expects.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0412",
+    "title": "Secondary air injection switching valve circuit (bank 1)",
+    "meaning": "The secondary air switching valve's circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0414",
+    "title": "Secondary air injection switching valve circuit shorted (bank 1)",
+    "meaning": "The secondary air switching valve's circuit is shorted.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0415",
+    "title": "Secondary air injection switching valve circuit (bank 2)",
+    "meaning": "A bank 2 secondary air switching valve circuit is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0416",
+    "title": "Secondary air injection switching valve circuit open (bank 2)",
+    "meaning": "A bank 2 secondary air switching valve circuit is open (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0417",
+    "title": "Secondary air injection switching valve circuit shorted (bank 2)",
+    "meaning": "A bank 2 secondary air switching valve circuit is shorted (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0419",
+    "title": "Secondary air injection relay B circuit",
+    "meaning": "A second secondary-air pump relay circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0421",
+    "title": "Warm-up catalyst efficiency below threshold (bank 1)",
+    "meaning": "The warm-up catalyst isn't cleaning the exhaust as well as it should.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0422",
+    "title": "Main catalyst efficiency below threshold (bank 1)",
+    "meaning": "The main catalyst isn't cleaning the exhaust as well as it should.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0423",
+    "title": "Heated catalyst efficiency below threshold (bank 1)",
+    "meaning": "The heated catalyst isn't cleaning the exhaust as well as it should.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0424",
+    "title": "Heated catalyst temperature below threshold (bank 1)",
+    "meaning": "The heated catalyst isn't reaching operating temperature.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0430",
+    "title": "Catalyst system efficiency below threshold (bank 2)",
+    "meaning": "Bank 2's catalyst isn't cleaning the exhaust as well as it should (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0431",
+    "title": "Warm-up catalyst efficiency below threshold (bank 2)",
+    "meaning": "Bank 2's warm-up catalyst isn't cleaning the exhaust as well as it should (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0432",
+    "title": "Main catalyst efficiency below threshold (bank 2)",
+    "meaning": "Bank 2's main catalyst isn't cleaning the exhaust as well as it should (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0433",
+    "title": "Heated catalyst efficiency below threshold (bank 2)",
+    "meaning": "Bank 2's heated catalyst isn't cleaning the exhaust as well as it should (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0434",
+    "title": "Heated catalyst temperature below threshold (bank 2)",
+    "meaning": "Bank 2's heated catalyst isn't reaching operating temperature (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0441",
+    "title": "EVAP purge flow fault",
+    "meaning": "The fuel-vapor purge flow isn't what the computer expects.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0443",
+    "title": "EVAP purge control valve circuit",
+    "meaning": "The vapor purge valve's control circuit is faulty.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0444",
+    "title": "EVAP purge control valve circuit open",
+    "meaning": "The vapor purge valve's control circuit is open.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0445",
+    "title": "EVAP purge control valve circuit shorted",
+    "meaning": "The vapor purge valve's control circuit is shorted.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0447",
+    "title": "EVAP vent control circuit open",
+    "meaning": "The vapor vent valve's control circuit is open.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0448",
+    "title": "EVAP vent control circuit shorted",
+    "meaning": "The vapor vent valve's control circuit is shorted.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0449",
+    "title": "EVAP vent valve/solenoid circuit",
+    "meaning": "The vapor vent valve solenoid's circuit is faulty.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0450",
+    "title": "EVAP pressure sensor malfunction",
+    "meaning": "The fuel-vapor system's pressure sensor is faulty.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0451",
+    "title": "EVAP pressure sensor range/performance",
+    "meaning": "The fuel-vapor pressure sensor's reading is implausible.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0452",
+    "title": "EVAP pressure sensor low",
+    "meaning": "The fuel-vapor pressure sensor's signal is stuck low.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0453",
+    "title": "EVAP pressure sensor high",
+    "meaning": "The fuel-vapor pressure sensor's signal is stuck high.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0454",
+    "title": "EVAP pressure sensor intermittent",
+    "meaning": "The fuel-vapor pressure sensor's signal cuts in and out.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0456",
+    "title": "EVAP small leak detected",
+    "meaning": "The fuel-vapor system is losing a very small amount of pressure.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0457",
+    "title": "EVAP leak detected — fuel cap loose/off",
+    "meaning": "The fuel-vapor system suggests the fuel cap isn't sealed.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0458",
+    "title": "EVAP purge control valve circuit low",
+    "meaning": "The vapor purge valve's control circuit reads lower than expected.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0459",
+    "title": "EVAP purge control valve circuit high",
+    "meaning": "The vapor purge valve's control circuit reads higher than expected.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0460",
+    "title": "Fuel level sensor circuit",
+    "meaning": "The fuel level sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0461",
+    "title": "Fuel level sensor range/performance",
+    "meaning": "The fuel level reading doesn't behave the way a draining tank should.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0462",
+    "title": "Fuel level sensor circuit low",
+    "meaning": "The fuel level sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0463",
+    "title": "Fuel level sensor circuit high",
+    "meaning": "The fuel level sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0464",
+    "title": "Fuel level sensor circuit intermittent",
+    "meaning": "The fuel level sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0465",
+    "title": "Purge flow sensor circuit",
+    "meaning": "The vapor purge flow sensor's signal is faulty.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0466",
+    "title": "Purge flow sensor range/performance",
+    "meaning": "The vapor purge flow sensor's reading is implausible.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0467",
+    "title": "Purge flow sensor circuit low",
+    "meaning": "The vapor purge flow sensor's signal is stuck low.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0468",
+    "title": "Purge flow sensor circuit high",
+    "meaning": "The vapor purge flow sensor's signal is stuck high.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0469",
+    "title": "Purge flow sensor circuit intermittent",
+    "meaning": "The vapor purge flow sensor's signal cuts in and out.",
+    "urgency": "INFO"
+  },
+  {
+    "code": "P0470",
+    "title": "Exhaust pressure sensor malfunction",
+    "meaning": "The exhaust backpressure sensor's signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0471",
+    "title": "Exhaust pressure sensor range/performance",
+    "meaning": "The exhaust backpressure reading is implausible.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0472",
+    "title": "Exhaust pressure sensor low",
+    "meaning": "The exhaust backpressure sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0473",
+    "title": "Exhaust pressure sensor high",
+    "meaning": "The exhaust backpressure sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0474",
+    "title": "Exhaust pressure sensor intermittent",
+    "meaning": "The exhaust backpressure sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0475",
+    "title": "Exhaust pressure control valve malfunction",
+    "meaning": "The exhaust backpressure control valve is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0476",
+    "title": "Exhaust pressure control valve range/performance",
+    "meaning": "The exhaust backpressure control valve isn't behaving as commanded.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0477",
+    "title": "Exhaust pressure control valve low",
+    "meaning": "The exhaust backpressure control valve's circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0478",
+    "title": "Exhaust pressure control valve high",
+    "meaning": "The exhaust backpressure control valve's circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0479",
+    "title": "Exhaust pressure control valve intermittent",
+    "meaning": "The exhaust backpressure control valve's circuit cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0480",
+    "title": "Cooling fan 1 control circuit",
+    "meaning": "The primary cooling fan's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0481",
+    "title": "Cooling fan 2 control circuit",
+    "meaning": "A second cooling fan's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0482",
+    "title": "Cooling fan 3 control circuit",
+    "meaning": "A third cooling fan's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0483",
+    "title": "Cooling fan rationality check",
+    "meaning": "The cooling fan isn't spinning at the speed the computer expects.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0484",
+    "title": "Cooling fan circuit over current",
+    "meaning": "The cooling fan circuit is drawing more current than it should.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0485",
+    "title": "Cooling fan power/ground circuit",
+    "meaning": "The cooling fan's power or ground connection is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0500",
+    "title": "Vehicle speed sensor",
+    "meaning": "The vehicle speed signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0501",
+    "title": "Vehicle speed sensor range/performance",
+    "meaning": "The vehicle speed reading doesn't behave the way real road speed does.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0502",
+    "title": "Vehicle speed sensor circuit low",
+    "meaning": "The vehicle speed sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0503",
+    "title": "Vehicle speed sensor intermittent/erratic/high",
+    "meaning": "The vehicle speed signal is jumping around or reading too high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0504",
+    "title": "Brake switch A/B correlation",
+    "meaning": "The two brake pedal switches disagree with each other.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0508",
+    "title": "Idle control system circuit low",
+    "meaning": "The idle air control circuit reads lower than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0509",
+    "title": "Idle control system circuit high",
+    "meaning": "The idle air control circuit reads higher than expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0510",
+    "title": "Closed throttle position switch circuit",
+    "meaning": "The closed-throttle switch's circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0511",
+    "title": "Idle control circuit",
+    "meaning": "The idle air control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0512",
+    "title": "Starter request circuit",
+    "meaning": "The starter request signal circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0513",
+    "title": "Incorrect immobilizer key",
+    "meaning": "The immobilizer doesn't recognize the key it's being asked to start with.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0514",
+    "title": "Battery/starter circuit range/performance",
+    "meaning": "The battery-to-starter circuit isn't behaving as expected.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0515",
+    "title": "Battery temperature sensor circuit",
+    "meaning": "The battery temperature sensor's signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0516",
+    "title": "Battery temperature sensor range/performance",
+    "meaning": "The battery temperature reading is implausible.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0517",
+    "title": "Battery temperature sensor low",
+    "meaning": "The battery temperature sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0518",
+    "title": "Battery temperature sensor high",
+    "meaning": "The battery temperature sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0519",
+    "title": "Idle control system rationality error",
+    "meaning": "The idle speed doesn't match what the idle control system commanded.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0520",
+    "title": "Engine oil pressure sensor/switch circuit",
+    "meaning": "The oil pressure sensor's signal is faulty or missing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0521",
+    "title": "Engine oil pressure sensor/switch range/performance",
+    "meaning": "The oil pressure reading is implausible for current engine conditions.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0522",
+    "title": "Engine oil pressure sensor/switch low voltage",
+    "meaning": "The oil pressure sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0523",
+    "title": "Engine oil pressure sensor/switch high voltage",
+    "meaning": "The oil pressure sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0524",
+    "title": "Engine oil pressure too low",
+    "meaning": "Oil pressure has dropped below the safe minimum — this can cause engine damage if ignored.",
+    "urgency": "URGENT"
+  },
+  {
+    "code": "P0530",
+    "title": "A/C refrigerant pressure sensor circuit",
+    "meaning": "The air-conditioning pressure sensor's signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0531",
+    "title": "A/C refrigerant pressure sensor range/performance",
+    "meaning": "The air-conditioning pressure reading is implausible.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0532",
+    "title": "A/C refrigerant pressure sensor low",
+    "meaning": "The air-conditioning pressure sensor reads too low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0533",
+    "title": "A/C refrigerant pressure sensor high",
+    "meaning": "The air-conditioning pressure sensor reads too high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0534",
+    "title": "Air conditioner refrigerant charge loss",
+    "meaning": "The air-conditioning system has lost refrigerant.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0550",
+    "title": "Power steering pressure sensor circuit",
+    "meaning": "The power steering pressure sensor's signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0551",
+    "title": "Power steering pressure sensor range/performance",
+    "meaning": "The power steering pressure reading is implausible.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0552",
+    "title": "Power steering pressure sensor circuit low",
+    "meaning": "The power steering pressure sensor's signal is stuck low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0553",
+    "title": "Power steering pressure sensor circuit high",
+    "meaning": "The power steering pressure sensor's signal is stuck high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0554",
+    "title": "Power steering pressure sensor circuit intermittent",
+    "meaning": "The power steering pressure sensor's signal cuts in and out.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0563",
+    "title": "System voltage high",
+    "meaning": "Supply voltage is higher than the computer expects.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0564",
+    "title": "Cruise control multi-function input circuit",
+    "meaning": "The cruise control stalk/switch input circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0565",
+    "title": "Cruise control on signal",
+    "meaning": "The cruise control \"on\" signal circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0566",
+    "title": "Cruise control off signal",
+    "meaning": "The cruise control \"off\" signal circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0567",
+    "title": "Cruise control resume signal",
+    "meaning": "The cruise control \"resume\" signal circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0568",
+    "title": "Cruise control set signal",
+    "meaning": "The cruise control \"set\" signal circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0569",
+    "title": "Cruise control coast signal",
+    "meaning": "The cruise control \"coast\" signal circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0570",
+    "title": "Cruise control accel signal",
+    "meaning": "The cruise control \"accelerate\" signal circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0571",
+    "title": "Cruise control/brake switch A circuit",
+    "meaning": "The cruise-control brake cutoff switch circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0572",
+    "title": "Cruise control/brake switch A circuit low",
+    "meaning": "The cruise-control brake cutoff switch circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0573",
+    "title": "Cruise control/brake switch A circuit high",
+    "meaning": "The cruise-control brake cutoff switch circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0580",
+    "title": "Cruise control multi-function input circuit low",
+    "meaning": "The cruise control stalk/switch input circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0581",
+    "title": "Cruise control multi-function input circuit high",
+    "meaning": "The cruise control stalk/switch input circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0585",
+    "title": "Cruise control/brake switch B circuit",
+    "meaning": "A second cruise-control brake cutoff switch circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0586",
+    "title": "Cruise control/brake switch B circuit low",
+    "meaning": "A second cruise-control brake cutoff switch circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0587",
+    "title": "Cruise control/brake switch B circuit high",
+    "meaning": "A second cruise-control brake cutoff switch circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0594",
+    "title": "Cruise control servo control circuit",
+    "meaning": "The cruise control throttle actuator's circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0595",
+    "title": "Cruise control servo control circuit low",
+    "meaning": "The cruise control throttle actuator's circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0596",
+    "title": "Cruise control servo control circuit high",
+    "meaning": "The cruise control throttle actuator's circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0597",
+    "title": "Thermostat heater control circuit/open",
+    "meaning": "The electronically-heated thermostat's control circuit is open.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0598",
+    "title": "Thermostat heater control circuit low",
+    "meaning": "The electronically-heated thermostat's control circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0599",
+    "title": "Thermostat heater control circuit high",
+    "meaning": "The electronically-heated thermostat's control circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0602",
+    "title": "Control module programming error",
+    "meaning": "The engine computer's programmed data is corrupted or incomplete.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0603",
+    "title": "Internal control module keep-alive memory error",
+    "meaning": "The engine computer's keep-alive memory failed its self-check.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0604",
+    "title": "Internal control module RAM error",
+    "meaning": "The engine computer's working memory failed its self-check.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0605",
+    "title": "Internal control module ROM error",
+    "meaning": "The engine computer's program memory failed its self-check.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0608",
+    "title": "Control module VSS output A malfunction",
+    "meaning": "The engine computer's vehicle-speed output signal (A) is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0609",
+    "title": "Control module VSS output B malfunction",
+    "meaning": "The engine computer's vehicle-speed output signal (B) is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0610",
+    "title": "Control module vehicle options error",
+    "meaning": "The engine computer's configured vehicle options don't match what it's seeing.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0620",
+    "title": "Generator control circuit",
+    "meaning": "The alternator's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0621",
+    "title": "Generator lamp \"L\" control circuit",
+    "meaning": "The alternator warning-lamp control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0622",
+    "title": "Generator field \"F\" control circuit",
+    "meaning": "The alternator field control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0625",
+    "title": "Generator field terminal circuit low",
+    "meaning": "The alternator field terminal circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0626",
+    "title": "Generator field terminal circuit high",
+    "meaning": "The alternator field terminal circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0627",
+    "title": "Fuel pump A control circuit/open",
+    "meaning": "The fuel pump control circuit is open.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0628",
+    "title": "Fuel pump A control circuit low",
+    "meaning": "The fuel pump control circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0629",
+    "title": "Fuel pump A control circuit high",
+    "meaning": "The fuel pump control circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0630",
+    "title": "VIN not programmed or incompatible — ECM/PCM",
+    "meaning": "The engine computer's stored VIN is missing or doesn't match.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0633",
+    "title": "Immobilizer key not programmed — ECM/PCM",
+    "meaning": "The engine computer doesn't recognize the immobilizer key as programmed.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0640",
+    "title": "Intake air heater control circuit",
+    "meaning": "The intake air heater's control circuit is faulty (a diesel cold-start feature — not applicable on this petrol engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0645",
+    "title": "A/C clutch relay control circuit",
+    "meaning": "The air-conditioning compressor clutch relay circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0646",
+    "title": "A/C clutch relay control circuit low",
+    "meaning": "The air-conditioning compressor clutch relay circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0647",
+    "title": "A/C clutch relay control circuit high",
+    "meaning": "The air-conditioning compressor clutch relay circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0650",
+    "title": "Malfunction indicator lamp control circuit",
+    "meaning": "The check-engine lamp's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0654",
+    "title": "Engine RPM output circuit",
+    "meaning": "The engine computer's RPM output signal to the instrument cluster is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0655",
+    "title": "Engine hot lamp output control circuit",
+    "meaning": "The engine-hot warning lamp's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0656",
+    "title": "Fuel level output circuit",
+    "meaning": "The engine computer's fuel level output signal is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0660",
+    "title": "Intake manifold tuning valve control circuit (bank 1)",
+    "meaning": "The variable intake manifold valve's control circuit is faulty.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0661",
+    "title": "Intake manifold tuning valve control circuit low (bank 1)",
+    "meaning": "The variable intake manifold valve's control circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0662",
+    "title": "Intake manifold tuning valve control circuit high (bank 1)",
+    "meaning": "The variable intake manifold valve's control circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0665",
+    "title": "Intake manifold tuning valve control circuit (bank 2)",
+    "meaning": "A bank 2 variable intake manifold valve circuit is faulty (not applicable on this single-bank engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0670",
+    "title": "Glow plug module control circuit",
+    "meaning": "The diesel glow-plug control module's circuit is faulty (not applicable on this petrol engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0671",
+    "title": "Cylinder 1 glow plug circuit",
+    "meaning": "Cylinder 1's diesel glow plug circuit is faulty (not applicable on this petrol engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0672",
+    "title": "Cylinder 2 glow plug circuit",
+    "meaning": "Cylinder 2's diesel glow plug circuit is faulty (not applicable on this petrol engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0673",
+    "title": "Cylinder 3 glow plug circuit",
+    "meaning": "Cylinder 3's diesel glow plug circuit is faulty (not applicable on this petrol engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0674",
+    "title": "Cylinder 4 glow plug circuit",
+    "meaning": "Cylinder 4's diesel glow plug circuit is faulty (not applicable on this petrol engine).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0685",
+    "title": "ECM/PCM power relay control circuit/open",
+    "meaning": "The main engine-computer power relay circuit is open.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0686",
+    "title": "ECM/PCM power relay control circuit low",
+    "meaning": "The main engine-computer power relay circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0687",
+    "title": "ECM/PCM power relay control circuit high",
+    "meaning": "The main engine-computer power relay circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0688",
+    "title": "ECM/PCM power relay sense circuit/open",
+    "meaning": "The engine computer can't sense its own power relay state — circuit open.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0689",
+    "title": "ECM/PCM power relay sense circuit low",
+    "meaning": "The engine computer's power relay sense circuit reads low.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0690",
+    "title": "ECM/PCM power relay sense circuit high",
+    "meaning": "The engine computer's power relay sense circuit reads high.",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0700",
+    "title": "Transmission control system malfunction",
+    "meaning": "The transmission computer has flagged a fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0701",
+    "title": "Transmission control system range/performance",
+    "meaning": "The transmission isn't behaving the way its computer expects (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0702",
+    "title": "Transmission control system electrical",
+    "meaning": "The transmission control system has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0703",
+    "title": "Torque converter/brake switch B circuit malfunction",
+    "meaning": "A brake-switch input used by the transmission computer is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0704",
+    "title": "Clutch switch input circuit malfunction",
+    "meaning": "The clutch pedal switch input to the transmission computer is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0705",
+    "title": "Transmission range sensor circuit (PRNDL input)",
+    "meaning": "The gear-selector position signal is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0706",
+    "title": "Transmission range sensor range/performance",
+    "meaning": "The gear-selector position reading is implausible (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0707",
+    "title": "Transmission range sensor circuit low input",
+    "meaning": "The gear-selector position signal is stuck low (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0708",
+    "title": "Transmission range sensor circuit high input",
+    "meaning": "The gear-selector position signal is stuck high (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0709",
+    "title": "Transmission range sensor circuit intermittent",
+    "meaning": "The gear-selector position signal cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0710",
+    "title": "Transmission fluid temperature sensor circuit",
+    "meaning": "The transmission fluid temperature signal is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0711",
+    "title": "Transmission fluid temperature sensor range/performance",
+    "meaning": "The transmission fluid temperature reading is implausible (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0712",
+    "title": "Transmission fluid temperature sensor circuit low",
+    "meaning": "The transmission fluid temperature signal is stuck low (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0713",
+    "title": "Transmission fluid temperature sensor circuit high",
+    "meaning": "The transmission fluid temperature signal is stuck high (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0714",
+    "title": "Transmission fluid temperature sensor circuit intermittent",
+    "meaning": "The transmission fluid temperature signal cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0715",
+    "title": "Transmission input speed sensor",
+    "meaning": "The gearbox input speed signal is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0716",
+    "title": "Input/turbine speed sensor range/performance",
+    "meaning": "The gearbox input speed reading is implausible (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0717",
+    "title": "Input/turbine speed sensor circuit no signal",
+    "meaning": "The gearbox input speed sensor has stopped signaling (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0718",
+    "title": "Input/turbine speed sensor circuit intermittent",
+    "meaning": "The gearbox input speed signal cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0719",
+    "title": "Torque converter/brake switch B circuit low",
+    "meaning": "A brake-switch input used by the transmission computer reads low (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0720",
+    "title": "Output speed sensor circuit malfunction",
+    "meaning": "The gearbox output speed signal is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0721",
+    "title": "Output speed sensor range/performance",
+    "meaning": "The gearbox output speed reading is implausible (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0722",
+    "title": "Output speed sensor circuit no signal",
+    "meaning": "The gearbox output speed sensor has stopped signaling (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0723",
+    "title": "Output speed sensor circuit intermittent",
+    "meaning": "The gearbox output speed signal cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0724",
+    "title": "Torque converter/brake switch B circuit high",
+    "meaning": "A brake-switch input used by the transmission computer reads high (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0725",
+    "title": "Engine speed input circuit malfunction",
+    "meaning": "The engine-speed signal reaching the transmission computer is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0726",
+    "title": "Engine speed input circuit range/performance",
+    "meaning": "The engine-speed signal reaching the transmission computer is implausible (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0727",
+    "title": "Engine speed input circuit no signal",
+    "meaning": "The engine-speed signal reaching the transmission computer has stopped (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0728",
+    "title": "Engine speed input circuit intermittent",
+    "meaning": "The engine-speed signal reaching the transmission computer cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0730",
+    "title": "Incorrect gear ratio",
+    "meaning": "The transmission isn't achieving the gear ratio it commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0731",
+    "title": "Gear 1 incorrect ratio",
+    "meaning": "First gear isn't achieving its expected ratio (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0732",
+    "title": "Gear 2 incorrect ratio",
+    "meaning": "Second gear isn't achieving its expected ratio (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0733",
+    "title": "Gear 3 incorrect ratio",
+    "meaning": "Third gear isn't achieving its expected ratio (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0734",
+    "title": "Gear 4 incorrect ratio",
+    "meaning": "Fourth gear isn't achieving its expected ratio (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0735",
+    "title": "Gear 5 incorrect ratio",
+    "meaning": "Fifth gear isn't achieving its expected ratio (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0736",
+    "title": "Reverse incorrect ratio",
+    "meaning": "Reverse gear isn't achieving its expected ratio (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0740",
+    "title": "Torque converter clutch circuit malfunction",
+    "meaning": "The torque converter lockup clutch circuit is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0741",
+    "title": "Torque converter clutch circuit performance or stuck off",
+    "meaning": "The torque converter lockup clutch isn't engaging when commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0742",
+    "title": "Torque converter clutch circuit stuck on",
+    "meaning": "The torque converter lockup clutch is stuck engaged (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0743",
+    "title": "Torque converter clutch circuit electrical",
+    "meaning": "The torque converter lockup clutch circuit has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0744",
+    "title": "Torque converter clutch circuit intermittent",
+    "meaning": "The torque converter lockup clutch circuit cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0745",
+    "title": "Pressure control solenoid malfunction",
+    "meaning": "A transmission hydraulic pressure control solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0746",
+    "title": "Pressure control solenoid performance or stuck off",
+    "meaning": "A transmission pressure control solenoid isn't responding when commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0747",
+    "title": "Pressure control solenoid stuck on",
+    "meaning": "A transmission pressure control solenoid is stuck engaged (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0748",
+    "title": "Pressure control solenoid electrical",
+    "meaning": "A transmission pressure control solenoid circuit has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0749",
+    "title": "Pressure control solenoid intermittent",
+    "meaning": "A transmission pressure control solenoid circuit cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0750",
+    "title": "Shift solenoid A malfunction",
+    "meaning": "A transmission shift solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0751",
+    "title": "Shift solenoid A performance or stuck off",
+    "meaning": "A transmission shift solenoid isn't responding when commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0752",
+    "title": "Shift solenoid A stuck on",
+    "meaning": "A transmission shift solenoid is stuck engaged (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0753",
+    "title": "Shift solenoid A electrical",
+    "meaning": "A transmission shift solenoid circuit has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0754",
+    "title": "Shift solenoid A intermittent",
+    "meaning": "A transmission shift solenoid circuit cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0755",
+    "title": "Shift solenoid B malfunction",
+    "meaning": "A second transmission shift solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0756",
+    "title": "Shift solenoid B performance or stuck off",
+    "meaning": "A second transmission shift solenoid isn't responding when commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0757",
+    "title": "Shift solenoid B stuck on",
+    "meaning": "A second transmission shift solenoid is stuck engaged (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0758",
+    "title": "Shift solenoid B electrical",
+    "meaning": "A second transmission shift solenoid circuit has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0759",
+    "title": "Shift solenoid B intermittent",
+    "meaning": "A second transmission shift solenoid circuit cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0760",
+    "title": "Shift solenoid C malfunction",
+    "meaning": "A third transmission shift solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0761",
+    "title": "Shift solenoid C performance or stuck off",
+    "meaning": "A third transmission shift solenoid isn't responding when commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0762",
+    "title": "Shift solenoid C stuck on",
+    "meaning": "A third transmission shift solenoid is stuck engaged (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0763",
+    "title": "Shift solenoid C electrical",
+    "meaning": "A third transmission shift solenoid circuit has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0764",
+    "title": "Shift solenoid C intermittent",
+    "meaning": "A third transmission shift solenoid circuit cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0765",
+    "title": "Shift solenoid D malfunction",
+    "meaning": "A fourth transmission shift solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0766",
+    "title": "Shift solenoid D performance or stuck off",
+    "meaning": "A fourth transmission shift solenoid isn't responding when commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0767",
+    "title": "Shift solenoid D stuck on",
+    "meaning": "A fourth transmission shift solenoid is stuck engaged (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0768",
+    "title": "Shift solenoid D electrical",
+    "meaning": "A fourth transmission shift solenoid circuit has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0769",
+    "title": "Shift solenoid D intermittent",
+    "meaning": "A fourth transmission shift solenoid circuit cuts in and out (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0770",
+    "title": "Shift solenoid E malfunction",
+    "meaning": "A fifth transmission shift solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0775",
+    "title": "Pressure control solenoid B malfunction",
+    "meaning": "A second transmission pressure control solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0776",
+    "title": "Pressure control solenoid B performance or stuck off",
+    "meaning": "A second transmission pressure control solenoid isn't responding when commanded (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0777",
+    "title": "Pressure control solenoid B stuck on",
+    "meaning": "A second transmission pressure control solenoid is stuck engaged (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0778",
+    "title": "Pressure control solenoid B electrical",
+    "meaning": "A second transmission pressure control solenoid circuit has an electrical fault (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0780",
+    "title": "Shift malfunction",
+    "meaning": "The transmission failed to complete a commanded shift correctly (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0781",
+    "title": "1-2 shift malfunction",
+    "meaning": "The 1-2 gear shift isn't completing correctly (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0782",
+    "title": "2-3 shift malfunction",
+    "meaning": "The 2-3 gear shift isn't completing correctly (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0783",
+    "title": "3-4 shift malfunction",
+    "meaning": "The 3-4 gear shift isn't completing correctly (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0784",
+    "title": "4-5 shift malfunction",
+    "meaning": "The 4-5 gear shift isn't completing correctly (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0785",
+    "title": "Shift/timing solenoid malfunction",
+    "meaning": "A shift-timing solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  },
+  {
+    "code": "P0796",
+    "title": "Pressure control solenoid C malfunction",
+    "meaning": "A third transmission pressure control solenoid is faulty (a transmission-side code).",
+    "urgency": "CHECK_SOON"
+  }
+]

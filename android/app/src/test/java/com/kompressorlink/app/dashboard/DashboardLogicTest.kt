@@ -4,7 +4,9 @@ import com.kompressorlink.app.reference.Band
 import com.kompressorlink.app.reference.ReferenceRepository
 import com.kompressorlink.app.telemetry.FakeScenario
 import com.kompressorlink.app.telemetry.FakeTelemetrySource
+import com.kompressorlink.app.telemetry.SIGNAL_COUNT
 import com.kompressorlink.app.telemetry.Signal
+import com.kompressorlink.app.telemetry.TelemetrySnapshot
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -22,6 +24,16 @@ class DashboardLogicTest {
 
     private val refs = ReferenceRepository { asset(it) }
     private val band = Band("LTFT1", "always", -10f, 10f, "%", "Confirmed", "hint")
+
+    private fun snap(vararg pairs: Pair<Signal, Float>): TelemetrySnapshot {
+        val v = FloatArray(SIGNAL_COUNT)
+        var mask = 0
+        pairs.forEach { (s, value) ->
+            v[s.ordinal] = value
+            mask = mask or (1 shl s.ordinal)
+        }
+        return TelemetrySnapshot(v, mask, flags = 0, seq = 0, uptimeMs = 0)
+    }
 
     @Test
     fun `level inside band is OK`() {
@@ -92,5 +104,25 @@ class DashboardLogicTest {
                    Signal.TIMING_ADV),
             DashboardLogic.DASHBOARD_SIGNALS,
         )
+    }
+
+    @Test
+    fun gaugeFor_displayedLevelOverridesRaw_andGatesHint() {
+        val s = snap(Signal.RPM to 750f, Signal.SPEED to 0f, Signal.ECT to 90f, Signal.LTFT1 to 4f)
+        val overridden = DashboardLogic.gaugeFor(Signal.LTFT1, s, refs, emptyList(),
+                                                 displayedLevel = GaugeLevel.AMBER)
+        assertEquals(GaugeLevel.AMBER, overridden.level)
+        assertNotNull(overridden.hint)   // hint gates on the DISPLAYED level
+        assertNotNull(overridden.band)
+    }
+
+    @Test
+    fun batteryContextLabel_namesTheActiveContext() {
+        val running = snap(Signal.RPM to 2000f, Signal.BATT_V_ADC to 14.2f)
+        assertEquals("charging",
+            DashboardLogic.gaugeFor(Signal.BATT_V_ADC, running, refs, emptyList()).contextLabel)
+        val off = snap(Signal.RPM to 0f, Signal.BATT_V_ADC to 12.6f)
+        assertEquals("resting",
+            DashboardLogic.gaugeFor(Signal.BATT_V_ADC, off, refs, emptyList()).contextLabel)
     }
 }
