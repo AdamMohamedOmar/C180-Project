@@ -17,6 +17,10 @@ inline constexpr size_t kDtcFrameMaxLen = 3 + 2 * kMaxDtcs + 2 * kMaxDtcs;  // 3
 inline constexpr uint8_t kControlOpTimeSync = 0x01;
 // 0x02 = CLEAR_DTC: reserved in the protocol doc, deliberately UNIMPLEMENTED
 // (deferred out of Phase 4 — the only ECU write in the whole project).
+// 0x03 = START_WIFI_SYNC: phone asks the logger to raise its SoftAP + HTTP
+// sync server (docs/wifi_sync_protocol.md). epoch_ms payload is ignored —
+// clients send zeros.
+inline constexpr uint8_t kControlOpStartWifiSync = 0x03;
 
 void pack_telemetry(const LatestValues& lv, uint8_t out[kTelemetryFrameLen]);
 

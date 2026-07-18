@@ -14,6 +14,7 @@ NimBLEServer* g_server = nullptr;
 NimBLECharacteristic* g_telemetry_chr = nullptr;
 NimBLECharacteristic* g_dtc_chr = nullptr;
 BleSvc::TimeSyncCallback g_time_cb = nullptr;
+BleSvc::WifiSyncRequestCallback g_wifi_sync_cb = nullptr;
 uint8_t g_last_dtc[kDtcFrameMaxLen] = {0};
 size_t g_last_dtc_len = 0;
 
@@ -22,8 +23,14 @@ class ControlCallbacks : public NimBLECharacteristicCallbacks {
     NimBLEAttValue v = chr->getValue();
     ControlCommand cmd;
     if (parse_control(v.data(), v.length(), &cmd)) {
-      if (g_time_cb != nullptr) {
-        g_time_cb(cmd.epoch_ms);
+      if (cmd.opcode == kControlOpTimeSync) {
+        if (g_time_cb != nullptr) {
+          g_time_cb(cmd.epoch_ms);
+        }
+      } else if (cmd.opcode == kControlOpStartWifiSync) {
+        if (g_wifi_sync_cb != nullptr) {
+          g_wifi_sync_cb();
+        }
       }
     } else {
       // Unknown opcode (incl. reserved 0x02 CLEAR_DTC) or malformed frame:
@@ -36,8 +43,10 @@ class ControlCallbacks : public NimBLECharacteristicCallbacks {
 ControlCallbacks g_control_callbacks;
 }  // namespace
 
-void BleSvc::begin(const char* fw_version, TimeSyncCallback on_time_sync) {
+void BleSvc::begin(const char* fw_version, TimeSyncCallback on_time_sync,
+                    WifiSyncRequestCallback on_wifi_sync) {
   g_time_cb = on_time_sync;
+  g_wifi_sync_cb = on_wifi_sync;
 
   NimBLEDevice::init(kBleDeviceName);
   g_server = NimBLEDevice::createServer();

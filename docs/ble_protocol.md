@@ -73,13 +73,16 @@ their J2012 order (byte1 first) — they are NOT little-endian swapped.
 
 | Offset | Size | Field |
 |---|---|---|
-| 0 | 1 | `opcode`: 0x01 = TIME_SYNC. 0x02 = CLEAR_DTC reserved, UNIMPLEMENTED (deferred by design) |
+| 0 | 1 | `opcode`: 0x01 = TIME_SYNC. 0x02 = CLEAR_DTC reserved, UNIMPLEMENTED (deferred by design). 0x03 = START_WIFI_SYNC (epoch_ms ignored, send zeros) |
 | 1 | 8 | `epoch_ms` — uint64 LE, Unix epoch milliseconds |
 
 Firmware ignores unknown opcodes (logs to Serial); a write whose length ≠ 9
 bytes MUST be treated the same way — logged to Serial and discarded, never
 parsed. On TIME_SYNC it sets the system clock and, if a ride is active,
-writes `#time_sync=<t_ms>:<epoch_ms>` into the ride CSV.
+writes `#time_sync=<t_ms>:<epoch_ms>` into the ride CSV. On START_WIFI_SYNC
+the firmware raises its WiFi SoftAP + HTTP sync server (see
+`docs/wifi_sync_protocol.md`); it auto-drops the AP after 5 min idle.
+Version byte is unchanged (this is an additive opcode, not a layout break).
 
 ## Golden test vectors (embed VERBATIM in both codebases' tests)
 
@@ -152,6 +155,9 @@ ECT=87, every other value slot zero:
 **D1 — DTC report: stored=[P0171], pending=[]:** `0101000171`
 **D2 — DTC report: both empty:** `010000`
 **C1 — control TIME_SYNC, epoch_ms=0x0123456789ABCDEF:** `01efcdab8967452301`
+**C2 — control START_WIFI_SYNC, epoch_ms=0xFEDCBA9876543210 (payload
+present but ignored by the firmware for this opcode — this vector proves
+parse_control decodes it correctly regardless):** `031032547698badcfe`
 
 ## Version policy
 

@@ -70,7 +70,8 @@ size_t pack_dtc_report(const DtcList& stored, const DtcList& pending,
 }
 
 bool parse_control(const uint8_t* data, size_t len, ControlCommand* out) {
-  if (len != kControlFrameLen || data[0] != kControlOpTimeSync) {
+  if (len != kControlFrameLen ||
+      (data[0] != kControlOpTimeSync && data[0] != kControlOpStartWifiSync)) {
     return false;
   }
   out->opcode = data[0];

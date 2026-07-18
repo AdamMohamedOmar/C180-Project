@@ -21,9 +21,14 @@ inline constexpr const char* kControlCharUuid = "c1800004-4b4c-4d27-b946-c180c0d
 class BleSvc {
  public:
   using TimeSyncCallback = void (*)(uint64_t epoch_ms);
+  using WifiSyncRequestCallback = void (*)();
 
   // Init NimBLE, create service/characteristics/DIS, start advertising.
-  void begin(const char* fw_version, TimeSyncCallback on_time_sync);
+  // on_wifi_sync fires on control opcode 0x03 (defaults to nullptr — main.cpp
+  // wiring it up is a later task; nullptr just means the request is ignored
+  // rather than crashing, matching the existing g_time_cb-null-check pattern).
+  void begin(const char* fw_version, TimeSyncCallback on_time_sync,
+             WifiSyncRequestCallback on_wifi_sync = nullptr);
 
   // Packs lv (caller has already stamped seq/uptime_ms) and notifies if a
   // client is subscribed. Call at ~2 Hz.

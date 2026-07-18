@@ -140,6 +140,19 @@ void test_parse_control_decodes_golden_c1_time_sync(void) {
   TEST_ASSERT_EQUAL_HEX64(0x0123456789ABCDEFull, cmd.epoch_ms);
 }
 
+void test_parse_control_decodes_golden_c2_start_wifi_sync(void) {
+  // C2: opcode=0x03 (START_WIFI_SYNC), epoch_ms=0xFEDCBA9876543210 -- a
+  // deliberately non-zero, non-trivial payload proves parse_control truly
+  // decodes/accepts it (the firmware-side caller ignores epoch_ms for this
+  // opcode, but parse_control itself makes no such distinction -- it
+  // decodes any well-formed 9-byte frame with a known opcode the same way).
+  const std::vector<uint8_t> frame = from_hex("031032547698badcfe");
+  ControlCommand cmd;
+  TEST_ASSERT_TRUE(parse_control(frame.data(), frame.size(), &cmd));
+  TEST_ASSERT_EQUAL_HEX8(kControlOpStartWifiSync, cmd.opcode);
+  TEST_ASSERT_EQUAL_HEX64(0xFEDCBA9876543210ull, cmd.epoch_ms);
+}
+
 void test_parse_control_rejects_wrong_length(void) {
   const std::vector<uint8_t> frame = from_hex("01efcdab89674523");  // 8 bytes
   ControlCommand cmd;
@@ -164,6 +177,7 @@ int main(int argc, char** argv) {
   RUN_TEST(test_pack_dtc_report_matches_golden_d2_empty);
   RUN_TEST(test_pack_dtc_report_returns_zero_when_cap_too_small);
   RUN_TEST(test_parse_control_decodes_golden_c1_time_sync);
+  RUN_TEST(test_parse_control_decodes_golden_c2_start_wifi_sync);
   RUN_TEST(test_parse_control_rejects_wrong_length);
   RUN_TEST(test_parse_control_rejects_reserved_clear_dtc_opcode);
   return UNITY_END();
