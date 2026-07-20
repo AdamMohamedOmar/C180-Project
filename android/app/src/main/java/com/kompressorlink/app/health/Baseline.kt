@@ -33,8 +33,14 @@ object Baseline {
      * points: ascending metric series (MetricSeries.build). Only eligible
      * points are learned from; window = last BASELINE_WINDOW of them.
      * Gates: >= BASELINE_MIN_SESSIONS eligible spanning >= 14 days.
+     *
+     * band: null for baseline-only metrics (2026-07-17 enhancement plan —
+     * e.g. ECT_WARMUP_RATE, MAF_HIGH_LOAD, O2_ACTIVITY_ONSET have no absolute
+     * band in w203_bands.json; MetricSeries.bandFor returns null for them).
+     * The personal envelope still learns for these — only the degenerate-MAD
+     * widen fraction needs a width reference to fall back to.
      */
-    fun evaluate(points: List<MetricPoint>, band: Band): Result {
+    fun evaluate(points: List<MetricPoint>, band: Band?): Result {
         val eligible = points.filter { it.eligible }.takeLast(HealthTuning.BASELINE_WINDOW)
         if (eligible.size < HealthTuning.BASELINE_MIN_SESSIONS) {
             return Result.Gated(eligible.size, HealthTuning.BASELINE_MIN_SESSIONS)
@@ -46,11 +52,14 @@ object Baseline {
         val values = eligible.map { it.value }
         val med = median(values)
         val mad = median(values.map { abs(it - med) })
-        val bandWidth = band.hi - band.lo
+        // Band-less (baseline-only) metrics fall back to the median's own
+        // scale: |median|, floored at 1 unit so a metric whose median sits
+        // near zero still gets a usable envelope. [Best estimate]
+        val widthRef = band?.let { it.hi - it.lo } ?: maxOf(abs(med), 1f)
         // Degenerate-MAD guard (spec §5.2): a car this consistent would
         // otherwise alarm on noise.
-        val delta = if (mad < HealthTuning.BASELINE_DEGENERATE_MAD_FRACTION * bandWidth) {
-            HealthTuning.BASELINE_DEGENERATE_WIDEN_FRACTION * bandWidth
+        val delta = if (mad < HealthTuning.BASELINE_DEGENERATE_MAD_FRACTION * widthRef) {
+            HealthTuning.BASELINE_DEGENERATE_WIDEN_FRACTION * widthRef
         } else {
             HealthTuning.BASELINE_MAD_K * mad
         }
@@ -58,8 +67,11 @@ object Baseline {
     }
 
     /** Spec §5.2: deviation = outside the personal envelope but INSIDE the
-     *  absolute band (beyond the band, live severity owns the story). */
-    fun isDeviation(current: Float, envelope: Envelope, band: Band): Boolean =
+     *  absolute band (beyond the band, live severity owns the story).
+     *  band == null (baseline-only metric, no absolute band at all): no live
+     *  severity system watches this signal either, so the carve-out doesn't
+     *  apply — deviation is simply "outside the personal envelope". */
+    fun isDeviation(current: Float, envelope: Envelope, band: Band?): Boolean =
         (current < envelope.lo || current > envelope.hi) &&
-            current >= band.lo && current <= band.hi
+            (band == null || (current >= band.lo && current <= band.hi))
 }

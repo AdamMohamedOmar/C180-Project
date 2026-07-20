@@ -81,6 +81,14 @@ class SessionAggregatorDynamicTest {
     }
 
     @Test
+    fun `no warmup rate when the climb completes faster than the minimum span`() {
+        val fast = agg()
+        fast.add(snap(Signal.ECT to 20f, Signal.RPM to 800f), 0)        // cold start decided
+        fast.add(snap(Signal.ECT to 85f, Signal.RPM to 800f), 60_000)   // hits 80 at 60 s (< 120 s floor)
+        assertNull(fast.buildStats(1).firstOrNull { it.signal == "ECT" }?.warmupRatePerMin)
+    }
+
+    @Test
     fun `o2 onset recorded on cold start only`() {
         val cold = agg()
         cold.add(snap(Signal.ECT to 20f, Signal.O2_B1S1_V to 0.45f, Signal.RPM to 900f), 0)
@@ -93,5 +101,24 @@ class SessionAggregatorDynamicTest {
         warm.add(snap(Signal.ECT to 85f, Signal.O2_B1S1_V to 0.75f, Signal.RPM to 900f), 0)
         warm.add(snap(Signal.ECT to 85f, Signal.O2_B1S1_V to 0.12f, Signal.RPM to 900f), 4_000)
         assertNull(warm.buildStats(1).firstOrNull { it.signal == "O2_B1S1_V" }?.o2OnsetS)
+    }
+
+    @Test
+    fun `o2 onset captures a sample that arrives before the first ECT sample on a cold session`() {
+        val cold = agg()
+        // O2 (tier M) polled before ECT (tier S) ever lands -- rich rail seen
+        // at session start, while coldStart is still undecided.
+        cold.add(snap(Signal.O2_B1S1_V to 0.75f, Signal.RPM to 900f), 0)
+        // First-ever ECT sample: decides cold start (20 < 40). Same snapshot
+        // carries a mid-band O2 reading that alone proves nothing.
+        cold.add(snap(Signal.ECT to 20f, Signal.O2_B1S1_V to 0.5f, Signal.RPM to 900f), 2_000)
+        // Lean rail completes the swing.
+        cold.add(snap(Signal.ECT to 21f, Signal.O2_B1S1_V to 0.12f, Signal.RPM to 900f), 5_000)
+        val onset = cold.buildStats(1).first { it.signal == "O2_B1S1_V" }.o2OnsetS
+        // Onset must be measured from the t=0 sample that already saw the
+        // high rail (5 s), not dropped or re-based off the ECT-decision
+        // snapshot -- had the t=0 sample been dropped, only the lean rail
+        // would ever be seen and onsetS would stay null forever.
+        assertEquals(5f, onset!!, 1e-3f)
     }
 }

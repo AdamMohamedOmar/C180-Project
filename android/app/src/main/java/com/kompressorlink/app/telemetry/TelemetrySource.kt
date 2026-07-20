@@ -13,4 +13,10 @@ interface TelemetrySource {
 
     /** No-op on fake sources; writes the control frame on BLE. */
     suspend fun sendTimeSync()
+
+    /** False/no-op on fake sources. On BLE, returns true only if the write
+     *  was issued while the connection was Ready — this is NOT an
+     *  acknowledgment from the device; the GATT write completes
+     *  asynchronously and its result is not surfaced by this call. */
+    suspend fun requestWifiSync(): Boolean
 }

@@ -19,6 +19,10 @@ import com.kompressorlink.app.health.PostSessionEvaluator
 import com.kompressorlink.app.health.SessionRecorder
 import com.kompressorlink.app.maintenance.MaintenanceCheckWorker
 import com.kompressorlink.app.reference.ReferenceRepository
+import com.kompressorlink.app.sync.RealWifiSyncConnector
+import com.kompressorlink.app.sync.RideIngestor
+import com.kompressorlink.app.sync.SyncClient
+import com.kompressorlink.app.sync.WifiSyncConnector
 import com.kompressorlink.app.telemetry.FakeScenario
 import com.kompressorlink.app.telemetry.FakeTelemetrySource
 import com.kompressorlink.app.telemetry.SourceChoice
@@ -26,7 +30,10 @@ import com.kompressorlink.app.telemetry.SourceChoiceStore
 import com.kompressorlink.app.telemetry.SourceSwitcher
 import com.kompressorlink.app.telemetry.ble.BleSession
 import com.kompressorlink.app.telemetry.ble.GattClient
+import java.io.File
 import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -164,6 +171,22 @@ class AppContainer(app: Application) {
         refs = referenceRepository,
         warnings = warningRepository,
     )
+
+    // ── Phase 5 WiFi ride-sync (2026-07-17 enhancement plan, Task 12) ──
+    // docs/wifi_sync_protocol.md. rideFileDao/ridesDir/rideIngestor only
+    // depend on fields declared above (db, referenceRepository,
+    // sessionRepository) and app itself, so declaration order here is safe;
+    // none of this is touched by the init{} block below.
+    val rideFileDao = db.rideFileDao()
+    val ridesDir = File(app.filesDir, "rides")
+    val rideIngestor = RideIngestor(referenceRepository, sessionRepository)
+    val wifiSyncConnector: WifiSyncConnector = RealWifiSyncConnector(app)
+    val syncClientFactory: (String, (URL) -> HttpURLConnection) -> SyncClient = { baseUrl, opener ->
+        SyncClient(
+            baseUrl = baseUrl, open = opener, dao = rideFileDao, ridesDir = ridesDir,
+            nowEpochMs = System::currentTimeMillis,
+        )
+    }
 
     init {
         scope.launch { maintenanceRepository.ensureSeeded() }

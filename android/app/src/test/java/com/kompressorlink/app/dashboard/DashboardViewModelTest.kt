@@ -50,6 +50,7 @@ class DashboardViewModelTest {
         override val telemetry: Flow<TelemetrySnapshot> = telemetryFlow
         override val dtcReport: StateFlow<DtcReport?> = MutableStateFlow(null)
         override suspend fun sendTimeSync() {}
+        override suspend fun requestWifiSync(): Boolean = false
     }
 
     private fun snap(vararg pairs: Pair<Signal, Float>): TelemetrySnapshot {

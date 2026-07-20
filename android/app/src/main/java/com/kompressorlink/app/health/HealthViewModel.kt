@@ -103,10 +103,18 @@ class HealthViewModel(
         val driftMap = HashMap<MetricId, Drift.Result>()
         val baselineMap = HashMap<MetricId, Baseline.Result>()
         for (metric in MetricId.entries) {
-            val band = MetricSeries.bandFor(metric, refs) ?: continue
+            // band is null for baseline-only metrics (2026-07-17 enhancement
+            // plan: ECT_WARMUP_RATE, MAF_HIGH_LOAD, O2_ACTIVITY_ONSET carry no
+            // w203_bands.json entry). Baseline.evaluate handles a null band;
+            // Drift still requires a real edge to project toward, so it only
+            // runs where an absolute band exists (deliberate scope honesty —
+            // no fabricated "weeks to edge" without a real edge to cross).
+            val band = MetricSeries.bandFor(metric, refs)
             val points = MetricSeries.build(metric, ordered, stats)
             baselineMap[metric] = Baseline.evaluate(points, band)
-            driftMap[metric] = Drift.evaluate(metric, points, band)
+            if (band != null) {
+                driftMap[metric] = Drift.evaluate(metric, points, band)
+            }
         }
 
         val openWarnings = inputs.warnings.filter { !it.acknowledged }

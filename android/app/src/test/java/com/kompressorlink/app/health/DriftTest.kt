@@ -85,4 +85,35 @@ class DriftTest {
         assertTrue(d.message.contains("falling"))
         assertTrue(d.message.contains("crosses 3"))
     }
+
+    // Task 6 (2026-07-17 enhancement plan) Step 1 asks whether the drift
+    // wording template composes correctly with the new metrics' units
+    // (°C/min, s, %). LTFT_LOAD_SENSITIVITY (unit "%") is the ONLY one of
+    // the four new metrics that can ever reach this function in production:
+    // MAF_HIGH_LOAD/ECT_WARMUP_RATE/O2_ACTIVITY_ONSET ship band-less (no
+    // w203_bands.json entry -- see Metrics.kt/BaselineTest/
+    // PostSessionEvaluatorTest), and both real call sites (HealthViewModel,
+    // PostSessionEvaluator) gate this call itself on `band != null`, so a
+    // "°C/min/week" or "s/week" composition is never actually produced
+    // anywhere -- there is nothing to test there beyond the analytical fact
+    // that the call site is unreachable for those three. This test covers
+    // the one metric where composition is real.
+    @Test
+    fun loadSensitivityMetric_message_composesWithPercentPerWeekUnit() {
+        // Falling toward the -8 "load_delta" lower edge -- the breather-leak
+        // direction (PLAN.md §8): 4.0 -> -2.0 over 20 days.
+        val loadDeltaBand = Band(
+            signal = "LTFT1", context = "load_delta", lo = -8f, hi = 8f,
+            unit = "%", confidence = "Best estimate",
+            hint = "Load trim far below idle trim: classic M271 breather/vacuum-leak signature",
+        )
+        val falling = (0..10).map { point(it * 2, 4f - it * 0.6f) }
+        val d = Drift.evaluate(MetricId.LTFT_LOAD_SENSITIVITY, falling, loadDeltaBand) as Drift.Result.Drifting
+        assertTrue(!d.rising)
+        assertEquals(3, d.weeksToEdge)
+        assertTrue(d.message.contains("falling"))
+        assertTrue(d.message.contains("%/week"))      // metric.unit ("%") composed into the per-week clause
+        assertTrue(d.message.contains("crosses -8 %"))
+        assertTrue(d.message.contains("~3 weeks"))
+    }
 }

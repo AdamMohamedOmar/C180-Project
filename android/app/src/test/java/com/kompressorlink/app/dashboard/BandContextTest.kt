@@ -78,9 +78,22 @@ class BandContextTest {
     }
 
     @Test
-    fun bandsJson_hasSixEntries_batteryHasBothContexts() {
-        assertEquals(6, refs.bands.size)
+    fun bandsJson_hasSevenEntries_batteryHasBothContexts() {
+        // 6 original + LTFT1 "load_delta" (2026-07-17 enhancement plan, Task 5).
+        assertEquals(7, refs.bands.size)
         val battery = refs.bandsFor(Signal.BATT_V_ADC)
         assertEquals(setOf("engine_running", "engine_off"), battery.map { it.context }.toSet())
+    }
+
+    @Test
+    fun loadDelta_neverHoldsLive_ltftFallsBackToAlwaysBand() {
+        // Step 2 (2026-07-17 enhancement plan): LTFT_LOAD_SENSITIVITY's
+        // "load_delta" band exists for the health-metrics registry only. The
+        // live dashboard's contextHolds() has no "load_delta" case, so it
+        // must fail closed and the gauge must keep resolving to the "always"
+        // band for LTFT1 — never crash, never silently pick the new band.
+        val s = snap(Signal.RPM to 2000f, Signal.LTFT1 to 4f)
+        val band = DashboardLogic.applicableBand(Signal.LTFT1, s, refs)!!
+        assertEquals("always", band.context)
     }
 }

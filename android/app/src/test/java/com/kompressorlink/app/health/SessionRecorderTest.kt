@@ -37,6 +37,7 @@ class SessionRecorderTest {
         override val telemetry: Flow<TelemetrySnapshot> = telemetryFlow
         override val dtcReport: StateFlow<DtcReport?> = dtcFlow
         override suspend fun sendTimeSync() {}
+        override suspend fun requestWifiSync(): Boolean = false
     }
 
     private fun speedSnap(speedKmh: Float) : TelemetrySnapshot {

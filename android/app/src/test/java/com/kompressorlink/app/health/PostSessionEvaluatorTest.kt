@@ -9,6 +9,7 @@ import com.kompressorlink.app.reference.ReferenceRepository
 import java.io.File
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -76,6 +77,61 @@ class PostSessionEvaluatorTest {
         assertEquals(1, raised.size)
         assertTrue(raised[0].detail.contains("at this rate"))
         assertTrue(raised[0].title.contains("drifting up"))
+    }
+
+    private suspend fun addWarmupSession(
+        repo: FakeSessionRepository,
+        day: Int,
+        warmupRate: Float,
+    ): Long {
+        val endedAt = day * Baseline.DAY_MS
+        return repo.record(
+            SessionEntity(
+                startedAtEpochMs = endedAt - 600_000, endedAtEpochMs = endedAt,
+                source = "REAL_BLE", snapshotCount = 1200, warmIdleSeconds = 300f,
+                distanceKm = 10f, hasStoredDtc = false,
+            )
+        ) { id ->
+            listOf(SessionStatEntity(
+                sessionId = id, signal = "ECT", sampleCount = 1000,
+                mean = warmupRate, min = warmupRate - 1, max = warmupRate + 1, stdDev = 0.5f,
+                secondsOutOfBand = 0f, worstLevel = "OK",
+                warmIdleMean = null, warmIdleCount = 0,
+                engineRunningMean = null, engineRunningCount = 0,
+                engineOffMean = null, engineOffCount = 0,
+                warmupRatePerMin = warmupRate,
+            ))
+        }
+    }
+
+    // Regression test for the ?: continue gap: MetricSeries.bandFor returns
+    // null for baseline-only metrics (ECT_WARMUP_RATE etc., 2026-07-17
+    // enhancement plan), and the loop used to skip any metric with no band
+    // entirely — silently dropping baseline/drift for these three metrics.
+    // Also verifies the deviation-warning template drops its "inside
+    // absolute limits" claim when there's no absolute band to back it up.
+    @Test
+    fun bandlessMetric_deviationStillRaisesWatch_withoutClaimingAbsoluteLimits() = runTest {
+        val sessions = FakeSessionRepository()
+        val warnings = FakeWarningRepository()
+        val evaluator = PostSessionEvaluator(sessions, warnings, refs, now = { 0L })
+        // 8 healthy ECT_WARMUP_RATE sessions (~10.2 °C/min, spread enough to
+        // avoid the degenerate-MAD branch), then one way-off session.
+        (0 until 8).forEach { addWarmupSession(sessions, day = it * 2 + 1, warmupRate = 10f + (it % 2) * 0.4f) }
+        val currentId = addWarmupSession(sessions, day = 18, warmupRate = 20f)
+
+        evaluator.onSessionClosed(currentId, SessionSource.REAL_BLE)
+
+        val raised = warnings.warnings.value.filter { it.kind == "BASELINE_DEVIATION" && it.signal == "ECT" }
+        assertEquals(1, raised.size)
+        assertEquals("WATCH", raised[0].level)
+        assertTrue(raised[0].detail.contains("outside your car's usual range"))
+        assertTrue(raised[0].detail.contains("worth watching"))
+        assertFalse(raised[0].detail.contains("absolute limits"))
+
+        // No absolute band => no DRIFT verdict either (Drift.kt still
+        // requires a real edge; band-less metrics don't get one).
+        assertEquals(0, warnings.warnings.value.count { it.kind == "DRIFT" && it.signal == "ECT" })
     }
 
     @Test

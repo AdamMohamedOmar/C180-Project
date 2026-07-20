@@ -38,6 +38,7 @@ interface SessionDao {
     @Query("SELECT COUNT(*) FROM sessions WHERE source IN (:sources)")
     suspend fun countBySources(sources: List<String>): Int
 
+    // REAL_BLE only: synced rides may duplicate live sessions (see RideIngestor dedup)
     @Query("SELECT SUM(distanceKm) FROM sessions WHERE source = 'REAL_BLE' AND endedAtEpochMs > :sinceEpochMs")
     suspend fun realDistanceSince(sinceEpochMs: Long): Float?
 

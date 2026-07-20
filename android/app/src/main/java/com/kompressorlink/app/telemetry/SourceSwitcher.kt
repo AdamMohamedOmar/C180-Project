@@ -50,4 +50,6 @@ class SourceSwitcher(
         .stateIn(scope, SharingStarted.Eagerly, active.value.dtcReport.value)
 
     override suspend fun sendTimeSync() = active.value.sendTimeSync()
+
+    override suspend fun requestWifiSync(): Boolean = active.value.requestWifiSync()
 }

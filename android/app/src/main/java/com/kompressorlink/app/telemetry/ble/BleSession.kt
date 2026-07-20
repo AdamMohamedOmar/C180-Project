@@ -35,6 +35,7 @@ class BleSession(
         override val telemetry: Flow<TelemetrySnapshot> = emptyFlow()
         override val dtcReport: StateFlow<DtcReport?> = MutableStateFlow(null)
         override suspend fun sendTimeSync() {}
+        override suspend fun requestWifiSync(): Boolean = false
     }
 
     private val inner = MutableStateFlow<TelemetrySource>(Idle)
@@ -65,4 +66,6 @@ class BleSession(
         .stateIn(scope, SharingStarted.Eagerly, null)
 
     override suspend fun sendTimeSync() = inner.value.sendTimeSync()
+
+    override suspend fun requestWifiSync(): Boolean = inner.value.requestWifiSync()
 }

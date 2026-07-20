@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -16,6 +17,10 @@ class BleTelemetrySourceTest {
 
     private class FakeLink : GattLink {
         val calls = mutableListOf<String>()
+        // Actual bytes of every writeControl call, alongside `calls`' size-only
+        // log -- needed to tell a TIME_SYNC frame apart from a START_WIFI_SYNC
+        // one (both happen to be 9 bytes) by opcode, not just count/size.
+        val writes = mutableListOf<ByteArray>()
         private val _events = MutableSharedFlow<GattEvent>(extraBufferCapacity = 32)
         override val events: SharedFlow<GattEvent> = _events
         fun emit(e: GattEvent) { check(_events.tryEmit(e)) }
@@ -24,7 +29,7 @@ class BleTelemetrySourceTest {
         override fun requestMtu(mtu: Int) { calls += "mtu:$mtu" }
         override fun discoverServices() { calls += "discover" }
         override fun enableNotifications(charUuid: String) { calls += "notify:$charUuid" }
-        override fun writeControl(value: ByteArray) { calls += "write:${value.size}" }
+        override fun writeControl(value: ByteArray) { calls += "write:${value.size}"; writes += value }
     }
 
     private fun hexToBytes(hex: String): ByteArray =
@@ -68,6 +73,25 @@ class BleTelemetrySourceTest {
 
         assertTrue(source.connectionState.value is ConnectionState.Ready)
         assertEquals("write:9", link.calls.last())  // time sync control frame
+    }
+
+    @Test
+    fun `requestWifiSync writes the control frame only once ready`() = runTest {
+        val link = FakeLink()
+        val source = BleTelemetrySource(backgroundScope, link, now = { 42L })
+        assertFalse(source.requestWifiSync())  // not connected yet -- no-op
+        assertTrue(link.writes.isEmpty())
+
+        source.start(); runCurrent()
+        happyPathToReady(link); runCurrent()  // this alone already wrote a TIME_SYNC (opcode 0x01) frame
+
+        val writesBefore = link.writes.size
+        assertTrue(source.requestWifiSync())
+        assertEquals(writesBefore + 1, link.writes.size)
+        // Check the actual opcode byte, not just the 9-byte length -- buildTimeSync
+        // and buildStartWifiSync both produce 9-byte frames, so a copy-paste bug
+        // calling the wrong builder here would pass a length-only assertion.
+        assertEquals(0x03.toByte(), link.writes.last()[0])
     }
 
     @Test

@@ -130,6 +130,12 @@ class BleTelemetrySource(
         }
     }
 
+    override suspend fun requestWifiSync(): Boolean {
+        if (_connectionState.value !is ConnectionState.Ready) return false
+        link.writeControl(FrameCodec.buildStartWifiSync())
+        return true
+    }
+
     private companion object {
         const val REQUESTED_MTU = 517
         const val MIN_MTU = 91  // 88-byte frame + 3-byte ATT header

@@ -25,8 +25,11 @@ object HealthTuning {
     const val BASELINE_MAD_K = 3f
     const val BASELINE_MIN_SESSIONS = 8
     const val BASELINE_MIN_SPAN_DAYS = 14
-    const val BASELINE_DEGENERATE_MAD_FRACTION = 0.01f   // MAD < 1% of band width…
-    const val BASELINE_DEGENERATE_WIDEN_FRACTION = 0.05f // …widen to ±5% of band width
+    const val BASELINE_DEGENERATE_MAD_FRACTION = 0.01f   // MAD < 1% of the width reference…
+    const val BASELINE_DEGENERATE_WIDEN_FRACTION = 0.05f // …widen to ±5% of the width reference
+                                                          // (band width, or the median-based
+                                                          // fallback for band-less metrics —
+                                                          // see Baseline.kt's widthRef)
 
     // Drift (spec §5.3)
     const val DRIFT_WINDOW = 20

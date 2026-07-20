@@ -15,6 +15,11 @@
     "hint": "LTFT high at warm idle: classic M271 partial-load breather-hose leak — see guide §2 tree"
   },
   {
+    "signal": "LTFT1", "context": "load_delta", "lo": -8.0, "hi": 8.0,
+    "unit": "%", "confidence": "Best estimate",
+    "hint": "Load trim far below idle trim: classic M271 breather/vacuum-leak signature — see guide §2 tree"
+  },
+  {
     "signal": "ECT", "context": "warm_idle", "lo": 87.0, "hi": 95.0,
     "unit": "°C", "confidence": "Best estimate",
     "hint": "Warm idle should settle 87–95 °C (thermostat opens at 87 °C)"

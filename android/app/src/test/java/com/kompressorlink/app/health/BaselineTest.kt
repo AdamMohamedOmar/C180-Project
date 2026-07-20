@@ -69,4 +69,42 @@ class BaselineTest {
         assertFalse(Baseline.isDeviation(4.1f, env, ltftBand)) // inside envelope
         assertFalse(Baseline.isDeviation(12f, env, ltftBand))  // beyond band: live severity owns it
     }
+
+    // Baseline-only metrics (2026-07-17 enhancement plan: ECT_WARMUP_RATE,
+    // MAF_HIGH_LOAD, O2_ACTIVITY_ONSET) have no entry in w203_bands.json, so
+    // MetricSeries.bandFor returns null. The degenerate-MAD guard must still
+    // produce a usable, non-degenerate envelope by falling back to the
+    // median's own scale instead of an absolute band width.
+    @Test
+    fun degenerateMad_bandless_widensToMedianFraction() {
+        // Constant history, no band: MAD 0, widthRef falls back to
+        // |median| = 8 (not floored, since >= 1 unit), so the envelope
+        // widens to +-5% of 8 = +-0.4.
+        val points = (0 until 10).map { point(it * 2, 8f) }
+        val result = Baseline.evaluate(points, band = null) as Baseline.Result.Active
+        assertEquals(8f, result.envelope.median, 1e-4f)
+        assertEquals(7.6f, result.envelope.lo, 1e-4f)
+        assertEquals(8.4f, result.envelope.hi, 1e-4f)
+    }
+
+    @Test
+    fun degenerateMad_bandless_floorsWidthRefAtOneUnit_whenMedianNearZero() {
+        // Median near zero: widthRef floors at 1 unit rather than collapsing
+        // the envelope to near-nothing.
+        val points = (0 until 10).map { point(it * 2, 0.2f) }
+        val result = Baseline.evaluate(points, band = null) as Baseline.Result.Active
+        assertEquals(0.2f, result.envelope.median, 1e-4f)
+        assertEquals(0.15f, result.envelope.lo, 1e-4f)  // +-5% of the floored 1-unit widthRef
+        assertEquals(0.25f, result.envelope.hi, 1e-4f)
+    }
+
+    @Test
+    fun deviation_bandless_onlyChecksEnvelope() {
+        // No absolute band means no live-severity system owns "beyond the
+        // band" for this metric either — deviation is purely envelope-based.
+        val env = Baseline.Envelope(median = 4f, mad = 0.1f, lo = 3.7f, hi = 4.3f, eligibleCount = 10)
+        assertTrue(Baseline.isDeviation(8f, env, band = null))
+        assertFalse(Baseline.isDeviation(4.1f, env, band = null))
+        assertTrue(Baseline.isDeviation(100f, env, band = null))  // no absolute cap without a band
+    }
 }

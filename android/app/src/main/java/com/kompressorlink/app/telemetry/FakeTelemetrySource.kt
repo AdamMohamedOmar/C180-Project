@@ -45,6 +45,11 @@ class FakeTelemetrySource(
         // No device clock to sync — deliberate no-op on fakes.
     }
 
+    override suspend fun requestWifiSync(): Boolean {
+        // No real device to sync with — deliberate no-op/false on fakes.
+        return false
+    }
+
     companion object {
         // Mirrors firmware demo_feed's kDemoAvailMask reasoning: all F/M/S
         // signals (bits 0-13) + BATT_V_ADC (18); Legacy bits stay clear.

@@ -13,6 +13,7 @@ object FrameCodec {
     const val PROTOCOL_VERSION = 0x01
     const val TELEMETRY_FRAME_LEN = 88
     private const val OP_TIME_SYNC: Byte = 0x01
+    private const val OP_START_WIFI_SYNC: Byte = 0x03
 
     // docs/ble_protocol.md's DTC report cap; mirrors firmware/src/dtc_list.h's
     // kMaxDtcs = 8. No shared source of truth across languages for this
@@ -59,6 +60,10 @@ object FrameCodec {
             .put(OP_TIME_SYNC)
             .putLong(epochMs)
             .array()
+
+    /** docs/ble_protocol.md: opcode 0x03, epoch_ms payload ignored (zeros). */
+    fun buildStartWifiSync(): ByteArray =
+        ByteArray(9).also { it[0] = OP_START_WIFI_SYNC }
 
     /** SAE J2012 2-byte decode — the inverse of kl_sim/protocol.py's
      *  encode_dtc and the twin of firmware's dtc_code_to_string. The three

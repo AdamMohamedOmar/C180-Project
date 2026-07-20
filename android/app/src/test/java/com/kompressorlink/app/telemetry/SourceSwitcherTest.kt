@@ -21,12 +21,15 @@ class SourceSwitcherTest {
     private class StubSource(
         name: String,
         initialDtcReport: DtcReport? = null,
+        private val wifiSyncResult: Boolean = true,
     ) : TelemetrySource {
         override val connectionState = MutableStateFlow<ConnectionState>(ConnectionState.Simulated(name))
         override val telemetry: Flow<TelemetrySnapshot> = emptyFlow()
         override val dtcReport = MutableStateFlow(initialDtcReport)
         var timeSyncCount = 0
         override suspend fun sendTimeSync() { timeSyncCount++ }
+        var wifiSyncCount = 0
+        override suspend fun requestWifiSync(): Boolean { wifiSyncCount++; return wifiSyncResult }
     }
 
     @Test
@@ -60,6 +63,26 @@ class SourceSwitcherTest {
         switcher.sendTimeSync()
         assertEquals(1, healthy.timeSyncCount)
         assertEquals(1, fault.timeSyncCount)
+    }
+
+    @Test
+    fun `routes requestWifiSync to the currently active source`() = runTest {
+        val store = FakeStore()
+        // healthy and fault deliberately return DIFFERENT values -- proves
+        // SourceSwitcher threads through the active source's actual result
+        // rather than a value hardcoded in SourceSwitcher itself.
+        val healthy = StubSource("healthy", wifiSyncResult = true)
+        val fault = StubSource("fault", wifiSyncResult = false)
+        val switcher = SourceSwitcher(backgroundScope, store) { choice ->
+            if (choice == SourceChoice.SIMULATED_FAULT) fault else healthy
+        }
+        runCurrent()
+        assertEquals(true, switcher.requestWifiSync())
+        store.set(SourceChoice.SIMULATED_FAULT)
+        runCurrent()
+        assertEquals(false, switcher.requestWifiSync())
+        assertEquals(1, healthy.wifiSyncCount)
+        assertEquals(1, fault.wifiSyncCount)
     }
 
     @Test

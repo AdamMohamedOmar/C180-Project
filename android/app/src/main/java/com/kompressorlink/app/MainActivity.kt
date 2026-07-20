@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -52,6 +53,8 @@ import com.kompressorlink.app.health.HealthViewModel
 import com.kompressorlink.app.maintenance.MaintenanceCheckWorker
 import com.kompressorlink.app.maintenance.MaintenanceScreen
 import com.kompressorlink.app.maintenance.MaintenanceViewModel
+import com.kompressorlink.app.rides.RidesScreen
+import com.kompressorlink.app.rides.RidesViewModel
 import com.kompressorlink.app.telemetry.SourceChoice
 import com.kompressorlink.app.ui.components.ConnectionBanner
 import com.kompressorlink.app.ui.theme.KompressorLinkTheme
@@ -126,6 +129,7 @@ private val TABS = listOf(
     Tab("health", "Health"),
     Tab("dtc", "DTCs"),
     Tab("maintenance", "Maintenance"),
+    Tab("rides", "Rides"),
 )
 
 @Composable
@@ -133,7 +137,12 @@ private fun tabIcon(route: String) = when (route) {
     "dashboard" -> Icons.Filled.Home
     "health" -> Icons.Filled.Favorite
     "dtc" -> Icons.Filled.Warning
-    else -> Icons.Filled.Build
+    "maintenance" -> Icons.Filled.Build
+    // "rides": Icons.Filled.CloudDownload/DirectionsCar aren't in
+    // material-icons-core (this project has no material-icons-extended
+    // dependency — confirmed by inspecting the resolved 1.7.0 core aar),
+    // so Refresh stands in — this tab's whole job is "sync now".
+    else -> Icons.Filled.Refresh
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -281,6 +290,35 @@ private fun AppUi(container: AppContainer, startTab: StartTabEvent, onPairReques
                         )
                     })
                     MaintenanceScreen(vm)
+                }
+                composable("rides") {
+                    // NEARBY_WIFI_DEVICES (API 33+) is what WifiNetworkSpecifier
+                    // needs to join the logger's SoftAP (AndroidManifest.xml).
+                    // Requested here, scoped to the Rides tab, rather than in the
+                    // app-wide startup LaunchedEffect above — mirrors that same
+                    // BLE-permission-request pattern, just localized to "before
+                    // the first sync" instead of "at app launch".
+                    val wifiPermissionLauncher = rememberLauncherForActivityResult(
+                        ActivityResultContracts.RequestPermission()
+                    ) { /* denial surfaces visibly: the WiFi join just fails/times out */ }
+                    LaunchedEffect(Unit) {
+                        if (Build.VERSION.SDK_INT >= 33) {
+                            wifiPermissionLauncher.launch(Manifest.permission.NEARBY_WIFI_DEVICES)
+                        }
+                    }
+                    val vm: RidesViewModel = viewModel(initializer = {
+                        RidesViewModel(
+                            dao = container.rideFileDao,
+                            requestWifiSync = container.telemetrySource::requestWifiSync,
+                            connector = container.wifiSyncConnector,
+                            makeClient = container.syncClientFactory,
+                            ingestor = container.rideIngestor,
+                            ridesDir = container.ridesDir,
+                            debugServerOverride = if (BuildConfig.DEBUG)
+                                BuildConfig.KL_SYNC_DEV_SERVER.ifEmpty { null } else null,
+                        )
+                    })
+                    RidesScreen(vm)
                 }
             }
         }

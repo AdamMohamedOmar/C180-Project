@@ -28,7 +28,7 @@ class SessionAggregator(
     private val highLoad = HashMap<Signal, StreamingStats>()
     private val highLoadGate = DwellGate(HealthTuning.HIGH_LOAD_DWELL_SNAPSHOTS)
 
-    private enum class WarmupState { UNDECIDED, ACTIVE, DONE, NOT_COLD }
+    private enum class WarmupState { UNDECIDED, ACTIVE, DONE, NOT_COLD, ABANDONED }
     private var warmupState = WarmupState.UNDECIDED
     private val warmupSlope = StreamingSlope()
     private var warmupStartMs: Long? = null
@@ -51,6 +51,31 @@ class SessionAggregator(
 
     fun onDtcReport(report: DtcReport?) {
         if (report != null && report.stored.isNotEmpty()) hasStoredDtc = true
+    }
+
+    /**
+     * Called by a replay-style caller (RideReplayer) when it detects a data
+     * gap it chose not to tick through. `prevAtMs` drives every dtSec-gated
+     * accumulator (out-of-band seconds, warm-idle seconds) -- without this,
+     * the first post-gap add() call would charge the FULL gap length to
+     * whatever context that one fresh reading happens to land in (e.g. a
+     * warm-idle-shaped resumption reading right after a parked stop).
+     * Resetting it gives the post-gap call the same free dtMs=0 treatment a
+     * brand-new SessionAggregator gets automatically -- which is what the
+     * live path (SessionRecorder) already gets for free by constructing a
+     * fresh aggregator after close().
+     *
+     * Also abandons an in-progress cold-start warm-up measurement: a gap
+     * mid-warmup means we can no longer tell "still warming, just no data"
+     * from "engine off and cooling" for the span it covers, so the
+     * regression's x-axis (elapsed-minutes-since-session-start) can't be
+     * trusted across it either. warmupRatePerMin stays null for the rest of
+     * the session rather than silently reporting a rate a gap-spanning
+     * outlier point skewed.
+     */
+    fun resetTimingAfterGap() {
+        prevAtMs = null
+        if (warmupState == WarmupState.ACTIVE) warmupState = WarmupState.ABANDONED
     }
 
     fun add(snapshot: TelemetrySnapshot, atMs: Long) {
@@ -87,6 +112,11 @@ class SessionAggregator(
 
         if (sessionStartMs == null) sessionStartMs = atMs
         val startMs = sessionStartMs!!
+        // Same backward-wall-clock-jump guard as dtSec above (NTP correction,
+        // manual date change): without it a negative elapsed-since-start
+        // value could feed a bogus point into the warm-up slope regression
+        // or break the O2 onset detector's monotonic-time assumption.
+        val elapsedMs = maxOf(0L, atMs - startMs)
 
         // Cold-start warm-up slope (ECT vs minutes). Decided once, on the
         // FIRST ECT sample; slope only from a completed 40->80 °C climb.
@@ -97,7 +127,7 @@ class SessionAggregator(
                 if (coldStart) warmupStartMs = atMs
             }
             if (warmupState == WarmupState.ACTIVE) {
-                warmupSlope.add((atMs - startMs) / 60_000f, ect)
+                warmupSlope.add(elapsedMs / 60_000f, ect)
                 if (ect >= HealthTuning.WARMUP_COMPLETE_ECT) {
                     warmupState = WarmupState.DONE
                     warmupEndMs = atMs
@@ -115,12 +145,19 @@ class SessionAggregator(
             }
         }
 
-        // O2 activity onset — meaningful on cold starts only (a warm engine
-        // is already in closed loop within seconds).
-        if (coldStart) {
-            snapshot.value(Signal.O2_B1S1_V)?.let {
-                o2Onset.add((atMs - startMs) / 1000f, it)
-            }
+        // O2 activity onset — ingested unconditionally, NOT gated on
+        // coldStart here. coldStart isn't decided until the first
+        // ECT-bearing snapshot, but O2 (tier M, ~0.5 Hz) can and does arrive
+        // before ECT (tier S, ~0.1 Hz) on every session — the scheduler
+        // zero-initializes every signal's due-time at boot and breaks ties
+        // by ascending table index, and O2_B1S1_V sits before ECT in that
+        // table (firmware/src/pid_scheduler.cpp). Gating ingestion on
+        // coldStart would silently drop those early samples on a session
+        // that turns out to be cold. Exposure — not ingestion — is what's
+        // gated on coldStart, in o2OnsetSOrNull below, so a warm session's
+        // internal detector state is simply never surfaced.
+        snapshot.value(Signal.O2_B1S1_V)?.let {
+            o2Onset.add(elapsedMs / 1000f, it)
         }
 
         val speed = snapshot.value(Signal.SPEED)

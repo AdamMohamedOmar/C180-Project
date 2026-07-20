@@ -113,4 +113,12 @@ class FrameCodecTest {
         // firmware test test_dtc_code_to_string_renders_c_letter_code.
         assertEquals("C0300", FrameCodec.decodeDtc(0x43, 0x00))
     }
+
+    @Test
+    fun `start wifi sync frame is opcode 3 with zero payload`() {
+        val frame = FrameCodec.buildStartWifiSync()
+        assertEquals(9, frame.size)
+        assertEquals(0x03.toByte(), frame[0])
+        assertTrue(frame.drop(1).all { it == 0.toByte() })
+    }
 }
